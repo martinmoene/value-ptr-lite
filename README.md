@@ -9,6 +9,11 @@ The last C++ smart-pointer for C++98, C++11 and later
 Appendix
 --------
 
+**Contents**  
+- [A.1 Value-ptr  lite test specification](#a1-value-ptr-lite-test-specification)
+- [A.2 Hidden test cases tagged with \[.applet\]](#a2-hidden-test-cases-tagged-with-applet)
+- [A.3 Hidden test cases for compile-time information](#a3-hidden-test-cases-for-compile-time-information)
+
 ### A.1 value-ptr lite test specification
 
 ```
@@ -51,4 +56,27 @@ make_value: Allows to in-place move-construct value_ptr from arguments (C++11)
 make_value: Allows to in-place copy-construct value_ptr from initializer-list and arguments (C++11)
 make_value: Allows to in-place move-construct value_ptr from initializer-list and arguments (C++11)
 std::hash<>: Allows to obtain hash (C++11)
+```
+
+### A.2 Hidden test cases tagged with [.applet]
+
+Applets demonstrate a specific use case.
+
+```
+[none]
+```
+
+### A.3 Hidden test cases for compile-time information
+
+The version of *value-ptr lite* is available via tag [.version]. The following tags are available for information on the compiler and on the C++ standard library used: `[.compiler]`, `[.stdc++]`, `[.stdlanguage]` and `[.stdlibrary]`.
+
+```
+value-ptr-lite version[.version]
+C++ compiler: compiler version[.compiler]
+C++ language: __cplusplus[.stdc++]
+C++ language: nsvp_CPP11_OR_GREATER[.stdc++]
+C++ language: nsvp_CPP14_OR_GREATER[.stdc++]
+C++ language: nsvp_CPP17_OR_GREATER[.stdc++]
+C++ language: presence of C++ language features[.stdlanguage]
+C++ library: presence of C++ library features[.stdlibrary]
 ```
