@@ -311,6 +311,10 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     : ptr( nsvp_nullptr )
     {}
 
+    compressed_ptr( pointer p )
+    : ptr( p ? cloner_type()( *p ) : nsvp_nullptr )
+    {}
+
     compressed_ptr( compressed_ptr const & other )
     : cloner_type ( other )
     , deleter_type( other )
@@ -446,15 +450,13 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
 
     void reset( element_type const & v ) nsvp_noexcept
     {
-        get_deleter()( ptr );
-        ptr = get_cloner()( v );
+        reset( get_cloner()( v ) );
     }
 
 #if  nsvp_CPP11_OR_GREATER
     void reset( element_type && v ) nsvp_noexcept
     {
-        get_deleter()( ptr );
-        ptr = get_cloner()( std::move( v ) );
+        reset( get_cloner()( std::move( v ) ) );
     }
 #endif
 
