@@ -191,7 +191,8 @@
 // in_place: code duplicated in any-lite, optional-lite, variant-lite, value-ptr-lite:
 //
 
-#if ! nonstd_lite_HAVE_IN_PLACE_TYPES
+#if   ! nonstd_lite_HAVE_IN_PLACE_TYPES
+#define nonstd_lite_HAVE_IN_PLACE_TYPES  1
 
 namespace nonstd {
 
@@ -223,8 +224,6 @@ inline in_place_t in_place( detail::in_place_index_tag<I> = detail::in_place_ind
 
 #define nonstd_lite_in_place_type_t( T)  nonstd::in_place_t(&)( nonstd::detail::in_place_type_tag<T>  )
 #define nonstd_lite_in_place_index_t(T)  nonstd::in_place_t(&)( nonstd::detail::in_place_index_tag<I> )
-
-#define nonstd_lite_HAVE_IN_PLACE_TYPES  1
 
 } // namespace nonstd
 
