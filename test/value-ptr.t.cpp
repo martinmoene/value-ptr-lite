@@ -180,7 +180,7 @@ CASE( "value_ptr: Allows to default construct an empty value_ptr" )
     EXPECT( !a );
 }
 
-CASE( "value_ptr: Allows to explicitly construct a disengaged, empty value_ptr via nullopt" )
+CASE( "value_ptr: Allows to explicitly construct a disengaged, empty value_ptr via nullptr" )
 {
 #if nsvp_HAVE_NULLPTR
     value_ptr<int> a( nullptr );

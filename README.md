@@ -11,7 +11,7 @@ Appendix
 
 ```
 value_ptr: Allows to default construct an empty value_ptr
-value_ptr: Allows to explicitly construct a disengaged, empty value_ptr via nullopt
+value_ptr: Allows to explicitly construct a disengaged, empty value_ptr via nullptr
 value_ptr: Allows to default construct an empty value_ptr with a non-default-constructible
 value_ptr: Allows to copy-construct from empty value_ptr
 value_ptr: Allows to copy-construct from non-empty value_ptr
