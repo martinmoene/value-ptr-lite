@@ -281,12 +281,11 @@ struct default_clone
 template <class T, class Cloner, class Deleter>
 struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
 {
-    typedef T         element_type;
-    typedef T *       pointer;
-    typedef T * const_pointer;
+    typedef T       element_type;
+    typedef T *     pointer;
 
-    typedef Cloner    cloner_type;
-    typedef Deleter   deleter_type;
+    typedef Cloner  cloner_type;
+    typedef Deleter deleter_type;
 
     // Lifetime:
 
@@ -389,12 +388,7 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
 
     // Observers:
 
-    pointer get() nsvp_noexcept
-    {
-        return ptr;
-    }
-
-    const_pointer get() const nsvp_noexcept
+    pointer get() const nsvp_noexcept
     {
         return ptr;
     }
