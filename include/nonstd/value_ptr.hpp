@@ -940,7 +940,7 @@ struct hash< nonstd::value_ptr<T, D, C> >
 
     result_type operator()( argument_type const & p ) const nsvp_noexcept
     {
-        return hash<typename argument_type::pointer>()( p.get() );
+        return hash<typename argument_type::const_pointer>()( p.get() );
     }
 };
 

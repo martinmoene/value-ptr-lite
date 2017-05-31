@@ -666,7 +666,7 @@ namespace {
     };
 }
 
-CASE( "value_ptr: Provides relational operators (pointer comparison)" )
+CASE( "value_ptr: Provides relational operators (pointer comparison, non-member)" )
 {
     SETUP( "" ) {
 
@@ -778,6 +778,20 @@ CASE( "make_value: Allows to in-place move-construct value_ptr from initializer-
     EXPECT(    s.state == moved_from       );
 #else
     EXPECT( !!"value_ptr: in-place construction is not available (no C++11)" );
+#endif
+}
+
+CASE( "std::hash<>: Allows to obtain hash (C++11)" )
+{
+#if nsvp_CPP11_OR_GREATER
+    value_ptr<int> a( 7 );
+    value_ptr<int> b( 7 );
+
+    EXPECT( std::hash<value_ptr<int> >()( a ) == std::hash<value_ptr<int> >()( a ) );
+    EXPECT( std::hash<value_ptr<int> >()( b ) == std::hash<value_ptr<int> >()( b ) );
+    EXPECT( std::hash<value_ptr<int> >()( a ) != std::hash<value_ptr<int> >()( b ) );
+#else
+    EXPECT( !!"std::hash<>: std::hash<> is not available (no C++11)" );
 #endif
 }
 

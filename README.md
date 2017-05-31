@@ -43,11 +43,12 @@ value_ptr: Allows to obtain engaged state via operator bool()
 value_ptr: Allows to reset content
 value_ptr: Allows to swap with other value_ptr (member)
 value_ptr: Allows to swap with other value_ptr (non-member)
-value_ptr: Provides relational operators (pointer comparison)
+value_ptr: Provides relational operators (pointer comparison, non-member)
 make_value: Allows to copy-construct value_ptr
 make_value: Allows to move-construct value_ptr (C++11)
 make_value: Allows to in-place copy-construct value_ptr from arguments (C++11)
 make_value: Allows to in-place move-construct value_ptr from arguments (C++11)
 make_value: Allows to in-place copy-construct value_ptr from initializer-list and arguments (C++11)
 make_value: Allows to in-place move-construct value_ptr from initializer-list and arguments (C++11)
+std::hash<>: Allows to obtain hash (C++11)
 ```
