@@ -1,0 +1,5 @@
+Changes for Value_ptr Lite – A single-file header-only version of value_ptr for use with C++98 and later
+
+version 0.0.0
+
+- Initial release.
