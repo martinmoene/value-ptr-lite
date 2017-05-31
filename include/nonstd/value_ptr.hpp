@@ -276,6 +276,18 @@ struct default_clone
     {
         return new T( std::move( x ) );
     }
+
+    template< class... Args >
+    T * operator()( nonstd_lite_in_place_type_t(T), Args&&... args ) const
+    {
+        return new T( std::forward<Args>(args)...);
+    }
+
+    template< class U, class... Args >
+    T * operator()( nonstd_lite_in_place_type_t(T), std::initializer_list<U> il, Args&&... args ) const
+    {
+        return new T( il, std::forward<Args>(args)...);
+    }
 #endif
 };
 
@@ -318,9 +330,21 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     {}
 
 #if  nsvp_CPP11_OR_GREATER
+
     compressed_ptr( element_type && value )
     : ptr( cloner_type()( std::move( value ) ) )
     {}
+
+    template< class... Args >
+    explicit compressed_ptr( nonstd_lite_in_place_type_t(T), Args&&... args )
+    : ptr( cloner_type()( in_place, std::forward<Args>(args)...) )
+    {}
+
+    template< class U, class... Args >
+    explicit compressed_ptr( nonstd_lite_in_place_type_t(T), std::initializer_list<U> il, Args&&... args )
+    : ptr( cloner_type()( in_place, il, std::forward<Args>(args)...) )
+    {}
+
 #endif
 
     compressed_ptr( element_type const & value, cloner_type const & cloner )
@@ -494,12 +518,12 @@ public:
 
     template< class... Args >
     explicit value_ptr( nonstd_lite_in_place_type_t(T), Args&&... args )
-    : value_ptr( T( std::forward<Args>(args)...) )
+    : ptr( in_place, std::forward<Args>(args)...)
     {}
 
     template< class U, class... Args >
     explicit value_ptr( nonstd_lite_in_place_type_t(T), std::initializer_list<U> il, Args&&... args )
-    : value_ptr( T( il, std::forward<Args>(args)...) )
+    : ptr( in_place, il, std::forward<Args>(args)...)
     {}
 
 #endif // nsvp_CPP11_OR_GREATER
@@ -715,7 +739,7 @@ inline value_ptr< typename std::decay<T>::type > make_value( T && v )
 template< class T, class... Args >
 inline value_ptr<T> make_value( Args&&... args )
 {
-    return value_ptr<T>( T( std::forward<Args>( args )...) );
+    return value_ptr<T>( in_place, std::forward<Args>(args)...);
 }
 
 template< class T, class U, class... Args >

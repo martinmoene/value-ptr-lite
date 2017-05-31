@@ -285,7 +285,7 @@ CASE( "value_ptr: Allows to in-place copy-construct from value (C++11)" )
 
     EXPECT( a->first        == 'a' );
     EXPECT( a->second.value ==  7  );
-    EXPECT( a->second.state == move_constructed );
+    EXPECT( a->second.state == copy_constructed );
     EXPECT(         s.state != moved_from       );
 #else
     EXPECT( !!"value_ptr: in-place construction is not available (no C++11)" );
@@ -320,7 +320,7 @@ CASE( "value_ptr: Allows to in-place copy-construct from initializer-list (C++11
     EXPECT( a->vec[2]  ==  9 );
     EXPECT( a->c       == 'a');
     EXPECT( a->s.value ==  7 );
-    EXPECT( a->s.state == move_constructed );
+    EXPECT( a->s.state == copy_constructed );
     EXPECT(    s.state != moved_from       );
 #else
     EXPECT( !!"value_ptr: in-place construction is not available (no C++11)" );
@@ -721,7 +721,7 @@ CASE( "make_value: Allows to in-place copy-construct value_ptr from arguments (C
 
     EXPECT( a->first        == 'a' );
     EXPECT( a->second.value ==  7  );
-    EXPECT( a->second.state == move_constructed );
+    EXPECT( a->second.state == copy_constructed );
     EXPECT(         s.state != moved_from       );
 #else
     EXPECT( !!"value_ptr: in-place construction is not available (no C++11)" );
@@ -756,7 +756,7 @@ CASE( "make_value: Allows to in-place copy-construct value_ptr from initializer-
     EXPECT( a->vec[2]  ==  9  );
     EXPECT( a->c       == 'a' );
     EXPECT( a->s.value ==  7  );
-    EXPECT( a->s.state == move_constructed );
+    EXPECT( a->s.state == copy_constructed );
     EXPECT(    s.state != moved_from       );
 #else
     EXPECT( !!"value_ptr: in-place construction is not available (no C++11)" );
