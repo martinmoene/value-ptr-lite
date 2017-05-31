@@ -20,6 +20,7 @@
 		<Unit filename="../../README.md" />
 		<Unit filename="../../appveyor.yml" />
 		<Unit filename="../../example/01-pimpl.cpp" />
+		<Unit filename="../../example/02-tree.cpp" />
 		<Unit filename="../../include/nonstd/value_ptr.hpp" />
 		<Unit filename="../../test/CMakeLists.txt" />
 		<Unit filename="../../test/lest_cpp03.hpp" />
