@@ -216,6 +216,7 @@ CASE( "value_ptr: Allows to copy-construct from non-empty value_ptr" )
 
     EXPECT(  b      );
     EXPECT( *b == 7 );
+    EXPECT(  b.get() != a.get() );
 }
 
 CASE( "value_ptr: Allows to move-construct from value_ptr (C++11)" )
@@ -377,11 +378,13 @@ CASE( "value_ptr: Allows to copy-assign from/to engaged and disengaged value_ptr
         d1 = e1;
         EXPECT(  d1 );
         EXPECT( *d1 == 123 );
+        EXPECT(  d1.get() != e1.get() );
     }
     SECTION( "an engaged value_ptr assigned an engaged value_ptr obtains its value" ) {
         e1 = e2;
         EXPECT(  e1 );
         EXPECT( *e1 == 987 );
+        EXPECT(  e1.get() != e2.get() );
     }
 #if nsvp_HAVE_NULLPTR
     SECTION( "an engaged value_ptr assigned nullptr becomes empty" ) {
@@ -392,6 +395,7 @@ CASE( "value_ptr: Allows to copy-assign from/to engaged and disengaged value_ptr
     SECTION( "a disengaged value_ptr assigned a disengaged value_ptr remains empty" ) {
         d1 = d2;
         EXPECT( !d1 );
+        EXPECT(  d1.get() == d2.get() );
     }}
 }
 
@@ -579,6 +583,7 @@ CASE( "value_ptr: Allows to swap with other value_ptr (member)" )
     SECTION( "swap disengaged with disengaged value_ptr" ) {
         d1.swap( d2 );
         EXPECT( !d1 );
+        EXPECT(  d1.get() == d2.get() );
     }
     SECTION( "swap engaged with engaged value_ptr" ) {
         e1.swap( e2 );
@@ -586,18 +591,21 @@ CASE( "value_ptr: Allows to swap with other value_ptr (member)" )
         EXPECT(  e2 );
         EXPECT( *e1 == 7 );
         EXPECT( *e2 == 42 );
+        EXPECT(  e1.get() != e2.get() );
     }
     SECTION( "swap disengaged with engaged value_ptr" ) {
         d1.swap( e1 );
         EXPECT(  d1 );
         EXPECT( !e1 );
         EXPECT( *d1 == 42 );
+        EXPECT(  d1.get() != e1.get() );
     }
     SECTION( "swap engaged with disengaged value_ptr" ) {
         e1.swap( d1 );
         EXPECT(  d1 );
         EXPECT( !e1 );
         EXPECT( *d1 == 42 );
+        EXPECT(  d1.get() != e1.get() );
     }}
 }
 
@@ -616,6 +624,7 @@ CASE( "value_ptr: Allows to swap with other value_ptr (non-member)" )
     SECTION( "swap disengaged with disengaged value_ptr" ) {
         swap( d1, d2 );
         EXPECT( !d1 );
+        EXPECT(  d1.get() == d2.get() );
     }
     SECTION( "swap engaged with engaged value_ptr" ) {
         swap( e1, e2 );
@@ -623,18 +632,21 @@ CASE( "value_ptr: Allows to swap with other value_ptr (non-member)" )
         EXPECT(  e2 );
         EXPECT( *e1 == 7 );
         EXPECT( *e2 == 42 );
+        EXPECT(  e2.get() != e1.get() );
     }
     SECTION( "swap disengaged with engaged value_ptr" ) {
         swap( d1, e1 );
         EXPECT(  d1 );
         EXPECT( !e1 );
         EXPECT( *d1 == 42 );
+        EXPECT(  d1.get() != e1.get() );
     }
     SECTION( "swap engaged with disengaged value_ptr" ) {
         swap( e1, d1 );
         EXPECT(  d1 );
         EXPECT( !e1 );
         EXPECT( *d1 == 42 );
+        EXPECT(  d1.get() != e1.get() );
     }}
 }
 
