@@ -347,7 +347,7 @@ CASE( "value_ptr: Allows to in-place move-construct from initializer-list (C++11
 
 // assignment:
 
-CASE( "value_ptr: Allows to assign nullptr to disengage" )
+CASE( "value_ptr: Allows to assign nullptr to disengage (C++11)" )
 {
 #if nsvp_HAVE_NULLPTR
     value_ptr<int>  a( 7 );
@@ -561,13 +561,34 @@ CASE( "value_ptr: Allows to obtain engaged state via operator bool()" )
 
 // modifiers:
 
-CASE( "value_ptr: Allows to reset content" )
+CASE( "value_ptr: Allows to release its content" )
+{
+    value_ptr<int> a = 7;
+
+    int * ap = a.release();
+
+    EXPECT_NOT(  a       );
+    EXPECT(     *ap == 7 ); delete ap;
+}
+
+CASE( "value_ptr: Allows to clear its content (reset)" )
 {
     value_ptr<int> a = 7;
 
     a.reset();
 
     EXPECT_NOT( a );
+}
+
+CASE( "value_ptr: Allows to replace its content (reset)" )
+{
+    value_ptr<int> a;
+    int * ap = new int( 7 ); 
+
+    a.reset( ap );
+
+    EXPECT(  a      );
+    EXPECT( *a == 7 );
 }
 
 // swap:

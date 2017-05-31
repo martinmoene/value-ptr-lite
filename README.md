@@ -31,7 +31,7 @@ value_ptr: Allows to in-place copy-construct from value (C++11)
 value_ptr: Allows to in-place move-construct from value (C++11)
 value_ptr: Allows to in-place copy-construct from initializer-list (C++11)
 value_ptr: Allows to in-place move-construct from initializer-list (C++11)
-value_ptr: Allows to assign nullptr to disengage
+value_ptr: Allows to assign nullptr to disengage (C++11)
 value_ptr: Allows to copy-assign from/to engaged and disengaged value_ptr-s
 value_ptr: Allows to move-assign from/to engaged and disengaged value_ptr-s (C++11)
 value_ptr: Allows to copy-assign from literal value
@@ -45,7 +45,9 @@ value_ptr: Allows to obtain pointer to value via operator->()
 value_ptr: Allows to obtain value via operator*()
 value_ptr: Allows to obtain moved-value via operator*()
 value_ptr: Allows to obtain engaged state via operator bool()
-value_ptr: Allows to reset content
+value_ptr: Allows to release its content
+value_ptr: Allows to clear its content (reset)
+value_ptr: Allows to replace its content (reset)
 value_ptr: Allows to swap with other value_ptr (member)
 value_ptr: Allows to swap with other value_ptr (non-member)
 value_ptr: Provides relational operators (pointer comparison, non-member)
