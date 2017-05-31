@@ -19,8 +19,9 @@
 #define NONSTD_VALUE_PTR_LITE_HPP
 
 #include <cassert>
+#include <functional>
 #include <memory>
-//#include <utility>
+#include <utility>
 
 #define  value_ptr_lite_VERSION "0.0.0"
 
@@ -425,11 +426,13 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
         ptr = get_cloner()( v );
     }
 
+#if  nsvp_CPP11_OR_GREATER
     void reset( element_type && v ) nsvp_noexcept
     {
         get_deleter()( ptr );
         ptr = get_cloner()( std::move( v ) );
     }
+#endif
 
     void swap( compressed_ptr & other ) nsvp_noexcept
     {
@@ -585,8 +588,11 @@ public:
             return *this;
 
         if ( rhs ) ptr.reset( *rhs );
-        else       ptr.reset( nsvp_nullptr );
-
+#if nsvp_HAVE_NULLPTR
+        else       ptr.reset( nullptr );
+#else
+        else       ptr.reset( pointer(0) );
+#endif
         return *this;
     }
 

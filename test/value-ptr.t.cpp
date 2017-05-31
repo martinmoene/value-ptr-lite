@@ -650,9 +650,7 @@ CASE( "value_ptr: Allows to swap with other value_ptr (non-member)" )
     }}
 }
 
-CASE( "value_ptr: Provides relational operators (pointer comparison)" )
-{
-    SETUP( "" ) {
+namespace {
 
     struct C
     {
@@ -666,6 +664,11 @@ CASE( "value_ptr: Provides relational operators (pointer comparison)" )
     {
         void operator()( int * ptr ) const {}
     };
+}
+
+CASE( "value_ptr: Provides relational operators (pointer comparison)" )
+{
+    SETUP( "" ) {
 
     value_ptr<int, C, D> e1( 1 );
     value_ptr<int, C, D> e2( 2 );
@@ -681,8 +684,10 @@ CASE( "value_ptr: Provides relational operators (pointer comparison)" )
     SECTION( "engaged >= engaged" ) { EXPECT(   e1 >= e1  ); }
     SECTION( "engaged >= engaged" ) { EXPECT(   e2 >= e1  ); }
 
+#if nsvp_HAVE_NULLPTR
     SECTION( "engaged != nullptr" ) { EXPECT(  (e1      != nullptr) ); }
     SECTION( "nullptr != engaged" ) { EXPECT(  (nullptr != e1     ) ); }
+#endif
     }
 }
 
