@@ -26,7 +26,7 @@ namespace nonstd {
 template< typename T, class Cloner, class Deleter>
 inline std::ostream & operator<<( std::ostream & os, ::nonstd::value_ptr<T, Cloner, Deleter> const & vp )
 {
-    return os << "[value_ptr: ?]";
+    os << "[value_ptr: "; if (vp) os << *vp; else os << "[empty]"; return os << "]";
 }
 
 }
