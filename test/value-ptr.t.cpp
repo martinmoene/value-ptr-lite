@@ -678,7 +678,7 @@ namespace {
         int * operator()( int const & x ) const
         {
             static int a[3];
-            return &a[x];
+            return & ( a[x] = -x );
         }
     };
     struct D
