@@ -424,7 +424,7 @@ CASE( "value_ptr: Allows to copy-assign from value" )
 
 CASE( "value_ptr: Allows to move-assign from value (C++11)" )
 {
-#if optional_CPP11_OR_GREATER
+#if nsvp_CPP11_OR_GREATER
     S s( 7 );
     value_ptr<S> a;
 
@@ -440,7 +440,7 @@ CASE( "value_ptr: Allows to move-assign from value (C++11)" )
 
 CASE( "value_ptr: Allows to copy-emplace content from arguments (C++11)" )
 {
-#if optional_CPP11_OR_GREATER
+#if nsvp_CPP11_OR_GREATER
     using pair_t = std::pair<char, S>;
     S s( 7 );
     value_ptr<pair_t> a;
@@ -458,7 +458,7 @@ CASE( "value_ptr: Allows to copy-emplace content from arguments (C++11)" )
 
 CASE( "value_ptr: Allows to move-emplace content from arguments (C++11)" )
 {
-#if optional_CPP11_OR_GREATER
+#if nsvp_CPP11_OR_GREATER
     using pair_t = std::pair<char, S>;
     S s( 7 );
     value_ptr<pair_t> a;
@@ -476,7 +476,7 @@ CASE( "value_ptr: Allows to move-emplace content from arguments (C++11)" )
 
 CASE( "value_ptr: Allows to copy-emplace content from intializer-list and arguments (C++11)" )
 {
-#if optional_CPP11_OR_GREATER
+#if nsvp_CPP11_OR_GREATER
     S s( 7 );
     value_ptr<InitList> a;
 
@@ -496,7 +496,7 @@ CASE( "value_ptr: Allows to copy-emplace content from intializer-list and argume
 
 CASE( "value_ptr: Allows to move-emplace content from intializer-list and arguments (C++11)" )
 {
-#if optional_CPP11_OR_GREATER
+#if nsvp_CPP11_OR_GREATER
     S s( 7 );
     value_ptr<InitList> a;
 
@@ -583,7 +583,7 @@ CASE( "value_ptr: Allows to clear its content (reset)" )
 CASE( "value_ptr: Allows to replace its content (reset)" )
 {
     value_ptr<int> a;
-    int * ap = new int( 7 ); 
+    int * ap = new int( 7 );
 
     a.reset( ap );
 
