@@ -121,48 +121,6 @@ struct InitList
 // test specification:
 //
 
-CASE( "value_ptr: Allows to ..." )
-{
-    struct Cloner : detail::default_clone<int>
-    {
-        Cloner() : data(-1) {}
-        int data;
-    };
-#if 0
-    {
-        value_ptr<double> vp;
-        detail::compressed_ptr<int, detail::default_clone<int>, detail::default_delete<int> > cp;
-
-        EXPECT( sizeof(long) == 4u );
-        EXPECT( sizeof(double) == 8u );
-        EXPECT( sizeof(vp) == 8u );
-        EXPECT( sizeof(cp) == 8u );
-        EXPECT( sizeof(detail::compressed_ptr<int, detail::default_clone<int>, detail::default_delete<int> >::pointer) == 8u );
-    }{
-        Cloner c; c.data = 10;
-        value_ptr<int, Cloner> vp;
-
-        EXPECT( vp.get_cloner().data == -1 );
-        EXPECT( sizeof(vp) == 12u );
-    }{
-        Cloner c; c.data = 10;
-        value_ptr<int, Cloner> vp( c );
-
-        EXPECT( vp.get_cloner().data == 10 );
-        EXPECT( sizeof(vp) == 12u );
-    }{
-        Cloner c; c.data = 10;
-        value_ptr<int, Cloner> vp( 42, c );
-
-        EXPECT( *vp == 42 );
-        EXPECT(  vp.get_cloner().data == 10 );
-        EXPECT( sizeof(vp) == 12u );
-    }
-#endif
-}
-
-// ============================================================================
-
 // Todo
 // - Cloner
 // - Deleter
@@ -512,6 +470,111 @@ CASE( "value_ptr: Allows to move-emplace content from intializer-list and argume
 #else
     EXPECT( !!"value_ptr: in-place construction is not available (no C++11)" );
 #endif
+}
+
+CASE( "value_ptr: Allows to construct using specified cloner" )
+{
+    struct Cloner : detail::default_clone<int>
+    {
+        Cloner() : data(-1) {}
+        int data;
+    };
+
+    SETUP("") {
+    
+    Cloner c; c.data = 7;
+
+    SECTION("default constructed") 
+    {
+        value_ptr<int, Cloner> vp;
+
+        EXPECT( vp.get_cloner().data == -1 );
+    }
+    SECTION("constructed from cloner object") 
+    {
+        value_ptr<int, Cloner> vp( c );
+
+        EXPECT( vp.get_cloner().data == 7 );
+    }
+    SECTION("constructed from value and cloner object") 
+    {
+        value_ptr<int, Cloner> vp( 42, c );
+
+        EXPECT( *vp == 42 );
+        EXPECT(  vp.get_cloner().data == 7 );
+    }}
+}
+
+CASE( "value_ptr: Allows to construct and destroy via specified cloner and deleter" )
+{
+    typedef int Movable;
+    
+    struct Spy
+    {
+        static void reset()
+        {
+            constructions() = clones() = destructions() = 0;
+        } 
+        
+        static int & constructions()  { static int count = 0; return count; }
+        static int & clones()        { static int count = 0; return count; }
+        static int & destructions()  { static int count = 0; return count; }
+
+        static Movable * create ( Movable const & value   ) { ++constructions(); return new Movable( value ); }
+        static Movable * clone  ( Movable const & value   ) { ++clones();        return new Movable( value ); }
+        static void      destroy( Movable       * pointer ) { ++destructions();  delete pointer; }
+    };
+    
+    struct Cloner 
+    {
+        Movable *operator()( Movable const & value ) const { return Spy::clone( value ); }
+    };
+    
+    struct Deleter 
+    {
+        void operator()( Movable * pointer ) const { return Spy::destroy( pointer ); }
+    };
+
+    typedef value_ptr<Movable, Cloner, Deleter> Value_ptr;
+    
+    SETUP("") {
+
+    Value_ptr a( Movable(42) ); 
+
+    Spy::reset();
+
+    SECTION("default constructed") 
+    {
+//        Value_ptr a( Spy::create( V(42) ) );
+//
+//        EXPECT( 1 == Spy::constructions() );
+//        EXPECT( 0 == Spy::destructions()  );
+//        EXPECT( 0 == Spy::clones()        );
+    }
+    SECTION("copy-constructed") 
+    {{
+        Value_ptr b( a );
+
+        EXPECT( *b == *a );
+        EXPECT(  1 == Spy::clones() );
+        EXPECT(  0 == Spy::destructions() );
+    }
+        EXPECT(  1 == Spy::destructions() );
+    }
+
+#if nsvp_CPP11_OR_GREATER
+    SECTION("move-constructed") 
+    {{    
+        Value_ptr b( std::move(a) );
+
+        EXPECT( *b == Movable(42) );
+        EXPECT(  0 == Spy::clones() );
+        EXPECT(  0 == Spy::destructions() );
+    }
+        EXPECT(  1 == Spy::destructions() );
+    }
+#endif
+    }
 }
 
 // observers:

@@ -41,6 +41,8 @@ value_ptr: Allows to copy-emplace content from arguments (C++11)
 value_ptr: Allows to move-emplace content from arguments (C++11)
 value_ptr: Allows to copy-emplace content from intializer-list and arguments (C++11)
 value_ptr: Allows to move-emplace content from intializer-list and arguments (C++11)
+value_ptr: Allows to construct using specified cloner
+value_ptr: Allows to construct and destroy via specified cloner and deleter
 value_ptr: Allows to obtain pointer to value via operator->()
 value_ptr: Allows to obtain value via operator*()
 value_ptr: Allows to obtain moved-value via operator*()
