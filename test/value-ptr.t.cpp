@@ -121,10 +121,6 @@ struct InitList
 // test specification:
 //
 
-// Todo
-// - Cloner
-// - Deleter
-
 //
 // value_ptr member operations:
 //
@@ -479,46 +475,6 @@ CASE( "value_ptr: Allows to move-emplace content from intializer-list and argume
 #endif
 }
 
-namespace cloner {
-
-struct Cloner : detail::default_clone<int>
-{
-    Cloner() : data(-1) {}
-    int data;
-};
-}
-
-CASE( "value_ptr: Allows to construct using specified cloner" )
-{
-    using namespace cloner;
-
-    SETUP("") {
-
-    Cloner c; c.data = 7;
-
-    SECTION( "default constructed" )
-    {
-        value_ptr<int, Cloner> vp;
-
-        EXPECT( vp.get_cloner().data == -1 );
-    }
-
-    SECTION( "constructed from cloner object" )
-    {
-        value_ptr<int, Cloner> vp( c );
-
-        EXPECT( vp.get_cloner().data == 7 );
-    }
-
-    SECTION( "constructed from value and cloner object" )
-    {
-        value_ptr<int, Cloner> vp( 42, c );
-
-        EXPECT( *vp == 42 );
-        EXPECT(  vp.get_cloner().data == 7 );
-    }}
-}
-
 namespace cloner_deleter {
 
 typedef int Movable;
@@ -551,7 +507,7 @@ struct Deleter
 
 } // anonymous namespace
 
-CASE( "value_ptr: Allows to construct and destroy via specified cloner and deleter" )
+CASE( "value_ptr: Allows to construct and destroy via user-specified cloner and deleter" )
 {
     using namespace cloner_deleter;
 
@@ -599,6 +555,46 @@ CASE( "value_ptr: Allows to construct and destroy via specified cloner and delet
     }
 #endif
     }
+}
+
+namespace cloner {
+
+struct Cloner : detail::default_clone<int>
+{
+    Cloner() : data(-1) {}
+    int data;
+};
+}
+
+CASE( "value_ptr: Allows to construct via user-specified cloner with member data" )
+{
+    using namespace cloner;
+
+    SETUP("") {
+
+    Cloner c; c.data = 7;
+
+    SECTION( "default constructed" )
+    {
+        value_ptr<int, Cloner> vp;
+
+        EXPECT( vp.get_cloner().data == -1 );
+    }
+
+    SECTION( "constructed from cloner object" )
+    {
+        value_ptr<int, Cloner> vp( c );
+
+        EXPECT( vp.get_cloner().data == 7 );
+    }
+
+    SECTION( "constructed from value and cloner object" )
+    {
+        value_ptr<int, Cloner> vp( 42, c );
+
+        EXPECT( *vp == 42 );
+        EXPECT(  vp.get_cloner().data == 7 );
+    }}
 }
 
 // observers:
