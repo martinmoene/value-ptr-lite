@@ -31,6 +31,7 @@ value_ptr: Allows to in-place copy-construct from value (C++11)
 value_ptr: Allows to in-place move-construct from value (C++11)
 value_ptr: Allows to in-place copy-construct from initializer-list (C++11)
 value_ptr: Allows to in-place move-construct from initializer-list (C++11)
+value_ptr: Allows to construct from pointer to value
 value_ptr: Allows to assign nullptr to disengage (C++11)
 value_ptr: Allows to copy-assign from/to engaged and disengaged value_ptr-s
 value_ptr: Allows to move-assign from/to engaged and disengaged value_ptr-s (C++11)

@@ -303,6 +303,13 @@ CASE( "value_ptr: Allows to in-place move-construct from initializer-list (C++11
 #endif
 }
 
+CASE( "value_ptr: Allows to construct from pointer to value" )
+{
+    value_ptr<int> a( new int(7) );
+
+    EXPECT( *a == 7 );
+}
+
 // assignment:
 
 CASE( "value_ptr: Allows to assign nullptr to disengage (C++11)" )
@@ -481,22 +488,24 @@ CASE( "value_ptr: Allows to construct using specified cloner" )
     };
 
     SETUP("") {
-    
+
     Cloner c; c.data = 7;
 
-    SECTION("default constructed") 
+    SECTION( "default constructed" )
     {
         value_ptr<int, Cloner> vp;
 
         EXPECT( vp.get_cloner().data == -1 );
     }
-    SECTION("constructed from cloner object") 
+
+    SECTION( "constructed from cloner object" )
     {
         value_ptr<int, Cloner> vp( c );
 
         EXPECT( vp.get_cloner().data == 7 );
     }
-    SECTION("constructed from value and cloner object") 
+
+    SECTION( "constructed from value and cloner object" )
     {
         value_ptr<int, Cloner> vp( 42, c );
 
@@ -508,15 +517,15 @@ CASE( "value_ptr: Allows to construct using specified cloner" )
 CASE( "value_ptr: Allows to construct and destroy via specified cloner and deleter" )
 {
     typedef int Movable;
-    
+
     struct Spy
     {
         static void reset()
         {
             constructions() = clones() = destructions() = 0;
-        } 
-        
-        static int & constructions()  { static int count = 0; return count; }
+        }
+
+        static int & constructions() { static int count = 0; return count; }
         static int & clones()        { static int count = 0; return count; }
         static int & destructions()  { static int count = 0; return count; }
 
@@ -524,34 +533,38 @@ CASE( "value_ptr: Allows to construct and destroy via specified cloner and delet
         static Movable * clone  ( Movable const & value   ) { ++clones();        return new Movable( value ); }
         static void      destroy( Movable       * pointer ) { ++destructions();  delete pointer; }
     };
-    
-    struct Cloner 
+
+    struct Cloner
     {
         Movable *operator()( Movable const & value ) const { return Spy::clone( value ); }
     };
-    
-    struct Deleter 
+
+    struct Deleter
     {
         void operator()( Movable * pointer ) const { return Spy::destroy( pointer ); }
     };
 
     typedef value_ptr<Movable, Cloner, Deleter> Value_ptr;
-    
+
     SETUP("") {
 
-    Value_ptr a( Movable(42) ); 
+    Value_ptr a( Movable(42) );
 
     Spy::reset();
 
-    SECTION("default constructed") 
-    {
-//        Value_ptr a( Spy::create( V(42) ) );
-//
-//        EXPECT( 1 == Spy::constructions() );
-//        EXPECT( 0 == Spy::destructions()  );
-//        EXPECT( 0 == Spy::clones()        );
+    SECTION( "constructed from pointer" )
+    {{
+        Value_ptr a( Spy::create( Movable(42) ) );
+
+        EXPECT( *a == Movable(42) );
+        EXPECT(  1 == Spy::constructions() );
+        EXPECT(  0 == Spy::destructions()  );
+        EXPECT(  0 == Spy::clones()        );
     }
-    SECTION("copy-constructed") 
+        EXPECT( 1 == Spy::destructions() );
+    }
+
+    SECTION( "copy-constructed" )
     {{
         Value_ptr b( a );
 
@@ -563,8 +576,8 @@ CASE( "value_ptr: Allows to construct and destroy via specified cloner and delet
     }
 
 #if nsvp_CPP11_OR_GREATER
-    SECTION("move-constructed") 
-    {{    
+    SECTION( "move-constructed" )
+    {{
         Value_ptr b( std::move(a) );
 
         EXPECT( *b == Movable(42) );

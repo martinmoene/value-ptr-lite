@@ -311,7 +311,7 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     {}
 
     compressed_ptr( pointer p )
-    : ptr( p ? cloner_type()( *p ) : nsvp_nullptr )
+    : ptr( p )
     {}
 
     compressed_ptr( compressed_ptr const & other )
@@ -574,6 +574,10 @@ public:
     : ptr( value, cloner, deleter )
     {}
 #endif
+
+    value_ptr( pointer p )
+    : ptr( p )
+    {}
 
     value_ptr( value_ptr const & other )
     : ptr( other.ptr )
