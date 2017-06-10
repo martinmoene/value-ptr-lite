@@ -479,13 +479,18 @@ CASE( "value_ptr: Allows to move-emplace content from intializer-list and argume
 #endif
 }
 
+namespace cloner {
+
+struct Cloner : detail::default_clone<int>
+{
+    Cloner() : data(-1) {}
+    int data;
+};
+}
+
 CASE( "value_ptr: Allows to construct using specified cloner" )
 {
-    struct Cloner : detail::default_clone<int>
-    {
-        Cloner() : data(-1) {}
-        int data;
-    };
+    using namespace cloner;
 
     SETUP("") {
 
@@ -514,35 +519,41 @@ CASE( "value_ptr: Allows to construct using specified cloner" )
     }}
 }
 
+namespace cloner_deleter {
+
+typedef int Movable;
+
+struct Spy
+{
+    static void reset()
+    {
+        constructions() = clones() = destructions() = 0;
+    }
+
+    static int & constructions() { static int count = 0; return count; }
+    static int & clones()        { static int count = 0; return count; }
+    static int & destructions()  { static int count = 0; return count; }
+
+    static Movable * create ( Movable const & value   ) { ++constructions(); return new Movable( value ); }
+    static Movable * clone  ( Movable const & value   ) { ++clones();        return new Movable( value ); }
+    static void      destroy( Movable       * pointer ) { ++destructions();  delete pointer; }
+};
+
+struct Cloner
+{
+    Movable *operator()( Movable const & value ) const { return Spy::clone( value ); }
+};
+
+struct Deleter
+{
+    void operator()( Movable * pointer ) const { return Spy::destroy( pointer ); }
+};
+
+} // anonymous namespace
+
 CASE( "value_ptr: Allows to construct and destroy via specified cloner and deleter" )
 {
-    typedef int Movable;
-
-    struct Spy
-    {
-        static void reset()
-        {
-            constructions() = clones() = destructions() = 0;
-        }
-
-        static int & constructions() { static int count = 0; return count; }
-        static int & clones()        { static int count = 0; return count; }
-        static int & destructions()  { static int count = 0; return count; }
-
-        static Movable * create ( Movable const & value   ) { ++constructions(); return new Movable( value ); }
-        static Movable * clone  ( Movable const & value   ) { ++clones();        return new Movable( value ); }
-        static void      destroy( Movable       * pointer ) { ++destructions();  delete pointer; }
-    };
-
-    struct Cloner
-    {
-        Movable *operator()( Movable const & value ) const { return Spy::clone( value ); }
-    };
-
-    struct Deleter
-    {
-        void operator()( Movable * pointer ) const { return Spy::destroy( pointer ); }
-    };
+    using namespace cloner_deleter;
 
     typedef value_ptr<Movable, Cloner, Deleter> Value_ptr;
 
