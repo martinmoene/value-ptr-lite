@@ -325,7 +325,9 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     : cloner_type ( std::move( other ) )
     , deleter_type( std::move( other ) )
     , ptr( std::move( other.ptr ) )
-    {}
+    { 
+        other.ptr = nullptr; 
+    }
 #endif
 
     compressed_ptr( element_type const & value )
