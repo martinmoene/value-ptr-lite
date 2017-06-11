@@ -323,38 +323,49 @@ CASE( "value_ptr: Allows to assign nullptr to disengage (C++11)" )
 
 CASE( "value_ptr: Allows to copy-assign from/to engaged and disengaged value_ptr-s" )
 {
-    SETUP( "" ) {
+    SETUP( "" )
+    {
         value_ptr<int> d1;
         value_ptr<int> d2;
         value_ptr<int> e1( 123 );
         value_ptr<int> e2( 987 );
 
 #if nsvp_HAVE_NULLPTR
-    SECTION( "a disengaged value_ptr assigned nullptr remains empty" ) {
+    SECTION( "a disengaged value_ptr assigned nullptr remains empty" )
+    {
         d1 = nullptr;
+
         EXPECT( !d1 );
     }
 #endif
-    SECTION( "a disengaged value_ptr assigned an engaged value_ptr obtains its value" ) {
+    SECTION( "a disengaged value_ptr assigned an engaged value_ptr obtains its value" )
+    {
         d1 = e1;
+
         EXPECT(  d1 );
         EXPECT( *d1 == 123 );
         EXPECT(  d1.get() != e1.get() );
     }
-    SECTION( "an engaged value_ptr assigned an engaged value_ptr obtains its value" ) {
+    SECTION( "an engaged value_ptr assigned an engaged value_ptr obtains its value" )
+    {
         e1 = e2;
+
         EXPECT(  e1 );
         EXPECT( *e1 == 987 );
         EXPECT(  e1.get() != e2.get() );
     }
 #if nsvp_HAVE_NULLPTR
-    SECTION( "an engaged value_ptr assigned nullptr becomes empty" ) {
+    SECTION( "an engaged value_ptr assigned nullptr becomes empty" )
+    {
         e1 = nullptr;
+
         EXPECT( !e1 );
     }
 #endif
-    SECTION( "a disengaged value_ptr assigned a disengaged value_ptr remains empty" ) {
+    SECTION( "a disengaged value_ptr assigned a disengaged value_ptr remains empty" )
+    {
         d1 = d2;
+
         EXPECT( !d1 );
         EXPECT(  d1.get() == d2.get() );
     }}
@@ -513,7 +524,8 @@ CASE( "value_ptr: Allows to construct and destroy via user-specified cloner and 
 
     typedef value_ptr<Movable, Cloner, Deleter> Value_ptr;
 
-    SETUP("") {
+    SETUP("")
+    {
 
     Value_ptr a( Movable(42) );
 
@@ -528,7 +540,7 @@ CASE( "value_ptr: Allows to construct and destroy via user-specified cloner and 
         EXPECT(  0 == Spy::destructions()  );
         EXPECT(  0 == Spy::clones()        );
     }
-        EXPECT( 1 == Spy::destructions() );
+        EXPECT(  1 == Spy::destructions()  );
     }
 
     SECTION( "copy-constructed" )
@@ -570,9 +582,9 @@ CASE( "value_ptr: Allows to construct via user-specified cloner with member data
 {
     using namespace cloner;
 
-    SETUP("") {
-
-    Cloner c; c.data = 7;
+    SETUP("")
+    {
+        Cloner c; c.data = 7;
 
     SECTION( "default constructed" )
     {
@@ -603,13 +615,17 @@ struct Integer { int x; Integer(int x) : x(x) {} };
 
 CASE( "value_ptr: Allows to obtain pointer to value via operator->()" )
 {
-    SETUP( "" ) {
+    SETUP( "" )
+    {
         value_ptr<Integer> e( Integer( 42 ) );
 
-    SECTION( "operator->() yields pointer to value (const)" ) {
+    SECTION( "operator->() yields pointer to value (const)" )
+    {
         EXPECT(  e->x == 42 );
     }
-    SECTION( "operator->() yields pointer to value (non-const)" ) {
+
+    SECTION( "operator->() yields pointer to value (non-const)" )
+    {
         e->x = 7;
         EXPECT(  e->x == 7 );
     }}
@@ -617,13 +633,17 @@ CASE( "value_ptr: Allows to obtain pointer to value via operator->()" )
 
 CASE( "value_ptr: Allows to obtain value via operator*()" )
 {
-    SETUP( "" ) {
+    SETUP( "" )
+    {
         value_ptr<int> e( 42 );
 
-    SECTION( "operator*() yields value (const)" ) {
+    SECTION( "operator*() yields value (const)" )
+    {
         EXPECT( *e == 42 );
     }
-    SECTION( "operator*() yields value (non-const)" ) {
+
+    SECTION( "operator*() yields value (non-const)" )
+    {
         *e = 7;
         EXPECT( *e == 7 );
     }}
@@ -678,34 +698,46 @@ CASE( "value_ptr: Allows to replace its content (reset)" )
 
 CASE( "value_ptr: Allows to swap with other value_ptr (member)" )
 {
-    SETUP( "" ) {
+    SETUP( "" )
+    {
         value_ptr<int> d1;
         value_ptr<int> d2;
         value_ptr<int> e1( 42 );
         value_ptr<int> e2( 7 );
 
-    SECTION( "swap disengaged with disengaged value_ptr" ) {
+    SECTION( "swap disengaged with disengaged value_ptr" )
+    {
         d1.swap( d2 );
+
         EXPECT( !d1 );
         EXPECT(  d1.get() == d2.get() );
     }
-    SECTION( "swap engaged with engaged value_ptr" ) {
+
+    SECTION( "swap engaged with engaged value_ptr" )
+    {
         e1.swap( e2 );
+
         EXPECT(  e1  );
         EXPECT(  e2 );
         EXPECT( *e1 == 7 );
         EXPECT( *e2 == 42 );
         EXPECT(  e1.get() != e2.get() );
     }
-    SECTION( "swap disengaged with engaged value_ptr" ) {
+
+    SECTION( "swap disengaged with engaged value_ptr" )
+    {
         d1.swap( e1 );
+
         EXPECT(  d1 );
         EXPECT( !e1 );
         EXPECT( *d1 == 42 );
         EXPECT(  d1.get() != e1.get() );
     }
-    SECTION( "swap engaged with disengaged value_ptr" ) {
+
+    SECTION( "swap engaged with disengaged value_ptr" )
+    {
         e1.swap( d1 );
+
         EXPECT(  d1 );
         EXPECT( !e1 );
         EXPECT( *d1 == 42 );
@@ -719,34 +751,43 @@ CASE( "value_ptr: Allows to swap with other value_ptr (member)" )
 
 CASE( "value_ptr: Allows to swap with other value_ptr (non-member)" )
 {
-    SETUP( "" ) {
+    SETUP( "" )
+    {
         value_ptr<int> d1;
         value_ptr<int> d2;
         value_ptr<int> e1( 42 );
         value_ptr<int> e2( 7 );
 
-    SECTION( "swap disengaged with disengaged value_ptr" ) {
+    SECTION( "swap disengaged with disengaged value_ptr" )
+    {
         swap( d1, d2 );
+
         EXPECT( !d1 );
         EXPECT(  d1.get() == d2.get() );
     }
-    SECTION( "swap engaged with engaged value_ptr" ) {
+    SECTION( "swap engaged with engaged value_ptr" )
+    {
         swap( e1, e2 );
+
         EXPECT(  e1  );
         EXPECT(  e2 );
         EXPECT( *e1 == 7 );
         EXPECT( *e2 == 42 );
         EXPECT(  e2.get() != e1.get() );
     }
-    SECTION( "swap disengaged with engaged value_ptr" ) {
+    SECTION( "swap disengaged with engaged value_ptr" )
+    {
         swap( d1, e1 );
+
         EXPECT(  d1 );
         EXPECT( !e1 );
         EXPECT( *d1 == 42 );
         EXPECT(  d1.get() != e1.get() );
     }
-    SECTION( "swap engaged with disengaged value_ptr" ) {
+    SECTION( "swap engaged with disengaged value_ptr" )
+    {
         swap( e1, d1 );
+
         EXPECT(  d1 );
         EXPECT( !e1 );
         EXPECT( *d1 == 42 );
