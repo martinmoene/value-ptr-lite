@@ -27,6 +27,10 @@
 
 // value-ptr-lite configuration:
 
+#ifndef  nsvp_CONFIG_COMPARE_POINTERS
+# define nsvp_CONFIG_COMPARE_POINTERS  0
+#endif
+
 // Compiler detection (C++17 is speculative):
 
 #define nsvp_CPP11_OR_GREATER  ( __cplusplus >= 201103L )
@@ -325,8 +329,8 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     : cloner_type ( std::move( other ) )
     , deleter_type( std::move( other ) )
     , ptr( std::move( other.ptr ) )
-    { 
-        other.ptr = nullptr; 
+    {
+        other.ptr = nullptr;
     }
 #endif
 
@@ -765,7 +769,11 @@ inline value_ptr<T> make_value( T const & v )
 
 #endif // optional_CPP11_OR_GREATER
 
-// Comparison:
+// Comparison between value_ptr-s:
+
+#if nsvp_CONFIG_COMPARE_POINTERS
+
+// compare pointers:
 
 template<
     class T1, class D1, class C1,
@@ -919,6 +927,162 @@ inline bool operator>=( std::nullptr_t, value_ptr<T, D, C> const & rhs )
 }
 
 #endif // nsvp_HAVE_NULLPTR
+
+#else  // nsvp_CONFIG_COMPARE_POINTERS
+
+// compare content:
+
+template<
+    class T1, class D1, class C1,
+    class T2, class D2, class C2
+>
+inline bool operator==(
+    value_ptr<T1, D1, C1> const & lhs,
+    value_ptr<T2, D2, C2> const & rhs )
+{
+//    return *lhs == *rhs;
+    return bool(lhs) != bool(rhs) ? false : bool(lhs) == false ? true : *lhs == *rhs;
+}
+
+template<
+    class T1, class D1, class C1,
+    class T2, class D2, class C2
+>
+inline bool operator!=(
+    value_ptr<T1, D1, C1> const & lhs,
+    value_ptr<T2, D2, C2> const & rhs )
+{
+    return ! ( lhs == rhs );
+}
+
+template<
+    class T1, class D1, class C1,
+    class T2, class D2, class C2
+>
+inline bool operator<(
+    value_ptr<T1, D1, C1> const & lhs,
+    value_ptr<T2, D2, C2> const & rhs )
+{
+//#if nsvp_CPP11_OR_GREATER
+//    using E1 = typename value_ptr<T1, D1, C1>::element_type;
+//    using E2 = typename value_ptr<T2, D2, C2>::element_type;
+//    using CT = typename std::common_type<E1, E2>::type;
+//    return std::less<CT>()( *lhs, *rhs );
+//#else
+//    return std::less<T1>()( *lhs, *rhs );
+//#endif
+
+    return (!rhs) ? false : (!lhs) ? true : *lhs < *rhs;
+}
+
+template<
+    class T1, class D1, class C1,
+    class T2, class D2, class C2
+>
+inline bool operator<=(
+    value_ptr<T1, D1, C1> const & lhs,
+    value_ptr<T2, D2, C2> const & rhs )
+{
+    return !( rhs < lhs );
+}
+
+template<
+    class T1, class D1, class C1,
+    class T2, class D2, class C2
+>
+inline bool operator>(
+    value_ptr<T1, D1, C1> const & lhs,
+    value_ptr<T2, D2, C2> const & rhs )
+{
+    return rhs < lhs;
+}
+
+template<
+    class T1, class D1, class C1,
+    class T2, class D2, class C2
+>
+inline bool operator>=(
+    value_ptr<T1, D1, C1> const & lhs,
+    value_ptr<T2, D2, C2> const & rhs )
+{
+    return !( lhs < rhs );
+}
+
+// compare with value:
+
+template< class T, class C, class D >
+bool operator==( value_ptr<T,C,D> const & x, const T & v )
+{
+    return bool(x) ? *x == v : false;
+}
+
+template< class T, class C, class D >
+bool operator==( T const & v, value_ptr<T,C,D> const & x )
+{
+    return bool(x) ? v == *x : false;
+}
+
+template< class T, class C, class D >
+bool operator!=( value_ptr<T,C,D> const & x, const T & v )
+{
+    return bool(x) ? *x != v : true;
+}
+
+template< class T, class C, class D >
+bool operator!=( T const & v, value_ptr<T,C,D> const & x )
+{
+    return bool(x) ? v != *x : true;
+}
+
+template< class T, class C, class D >
+bool operator<( value_ptr<T,C,D> const & x, const T & v )
+{
+    return bool(x) ? *x < v : true;
+}
+
+template< class T, class C, class D >
+bool operator<( T const & v, value_ptr<T,C,D> const & x )
+{
+    return bool(x) ? v < *x : false;
+}
+
+template< class T, class C, class D >
+bool operator<=( value_ptr<T,C,D> const & x, const T & v )
+{
+    return bool(x) ? *x <= v : true;
+}
+
+template< class T, class C, class D >
+bool operator<=( T const & v, value_ptr<T,C,D> const & x )
+{
+    return bool(x) ? v <= *x : false;
+}
+
+template< class T, class C, class D >
+bool operator>( value_ptr<T,C,D> const & x, const T & v )
+{
+    return bool(x) ? *x > v : false;
+}
+
+template< class T, class C, class D >
+bool operator>( T const & v, value_ptr<T,C,D> const & x )
+{
+    return bool(x) ? v > *x : true;
+}
+
+template< class T, class C, class D >
+bool operator>=( value_ptr<T,C,D> const & x, const T & v )
+{
+    return bool(x) ? *x >= v : false;
+}
+
+template< class T, class C, class D >
+bool operator>=( T const & v, value_ptr<T,C,D> const & x )
+{
+    return bool(x) ? v >= *x : true;
+}
+
+#endif // nsvp_CONFIG_COMPARE_POINTERS
 
 // swap:
 

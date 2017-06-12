@@ -795,7 +795,7 @@ CASE( "value_ptr: Allows to swap with other value_ptr (non-member)" )
     }}
 }
 
-namespace {
+namespace compare_pointers {
 
     struct C
     {
@@ -811,8 +811,11 @@ namespace {
     };
 }
 
-CASE( "value_ptr: Provides relational operators (pointer comparison, non-member)" )
+CASE( "value_ptr: Provides relational operators (value_ptr pointer comparison, non-member)" )
 {
+#if nsvp_CONFIG_COMPARE_POINTERS
+    using namespace compare_pointers;
+
     SETUP( "" ) {
 
     value_ptr<int, C, D> e1( 1 );
@@ -834,6 +837,92 @@ CASE( "value_ptr: Provides relational operators (pointer comparison, non-member)
     SECTION( "nullptr != engaged" ) { EXPECT(  (nullptr != e1     ) ); }
 #endif
     }
+#else
+    EXPECT( !!"value_ptr: pointer comparison is not available (nsvp_CONFIG_COMPARE_POINTERS undefined or 0)" );
+#endif
+}
+
+CASE( "value_ptr: Provides relational operators (value_ptr value comparison, non-member)" )
+{
+#if ! nsvp_CONFIG_COMPARE_POINTERS
+    using namespace compare_pointers;
+
+    SETUP( "" ) {
+
+    value_ptr<int> ue;
+    value_ptr<int> e1( 1 );
+    value_ptr<int> e2( 2 );
+
+    SECTION( "engaged   == engaged"   ) { EXPECT(     e1 == e1  ); }
+    SECTION( "engaged   != engaged"   ) { EXPECT(     e1 != e2  ); }
+
+    SECTION( "engaged   <  engaged"   ) { EXPECT(     e1 <  e2  ); }
+    SECTION( "engaged   <= engaged"   ) { EXPECT(     e1 <= e1  ); }
+    SECTION( "engaged   <= engaged"   ) { EXPECT(     e1 <= e2  ); }
+
+    SECTION( "engaged   >  engaged"   ) { EXPECT(     e2 >  e1  ); }
+    SECTION( "engaged   >= engaged"   ) { EXPECT(     e1 >= e1  ); }
+    SECTION( "engaged   >= engaged"   ) { EXPECT(     e2 >= e1  ); }
+
+    SECTION( "unengaged == unengaged" ) { EXPECT(     ue == ue  ); }
+    SECTION( "unengaged != unengaged" ) { EXPECT_NOT( ue != ue  ); }
+    SECTION( "unengaged <  unengaged" ) { EXPECT_NOT( ue <  ue  ); }
+    SECTION( "unengaged <= unengaged" ) { EXPECT(     ue <= ue  ); }
+    SECTION( "unengaged >  unengaged" ) { EXPECT_NOT( ue >  ue  ); }
+    SECTION( "unengaged >= unengaged" ) { EXPECT(     ue >= ue  ); }
+
+    SECTION( "engaged   == unengaged" ) { EXPECT_NOT( e1 == ue  ); }
+    SECTION( "engaged   != unengaged" ) { EXPECT(     e1 != ue  ); }
+    SECTION( "engaged   <  unengaged" ) { EXPECT_NOT( e1 <  ue  ); }
+    SECTION( "engaged   <= unengaged" ) { EXPECT_NOT( e1 <= ue  ); }
+    SECTION( "engaged   >  unengaged" ) { EXPECT(     e1 >  ue  ); }
+    SECTION( "engaged   >= unengaged" ) { EXPECT(     e1 >= ue  ); }
+
+    SECTION( "unengaged == engaged"   ) { EXPECT_NOT( ue == e1  ); }
+    SECTION( "unengaged != engaged"   ) { EXPECT(     ue != e1  ); }
+    SECTION( "unengaged <  engaged"   ) { EXPECT(     ue <  e1  ); }
+    SECTION( "unengaged <= engaged"   ) { EXPECT(     ue <= e1  ); }
+    SECTION( "unengaged >  engaged"   ) { EXPECT_NOT( ue >  e1  ); }
+    SECTION( "unengaged >= engaged"   ) { EXPECT_NOT( ue >= e1  ); }
+    }
+#else
+    EXPECT( !!"value_ptr: value comparison is not available (nsvp_CONFIG_COMPARE_POINTERS is non-zero)" );
+#endif
+}
+
+CASE( "value_ptr: Provides relational operators (value_ptr-value value comparison, non-member)" )
+{
+#if ! nsvp_CONFIG_COMPARE_POINTERS
+    using namespace compare_pointers;
+
+    SETUP( "" ) {
+
+    value_ptr<int> e1( 1 );
+    value_ptr<int> e2( 2 );
+    int            v1( 1 );
+    int            v2( 2 );
+
+    SECTION( "engaged == value"   ) { EXPECT(   e1 == v1  ); }
+    SECTION( "engaged != value"   ) { EXPECT(   e1 != v2  ); }
+    SECTION( "engaged <  value"   ) { EXPECT(   e1 <  v2  ); }
+    SECTION( "engaged <= value"   ) { EXPECT(   e1 <= v1  ); }
+    SECTION( "engaged <= value"   ) { EXPECT(   e1 <= v2  ); }
+    SECTION( "engaged >  value"   ) { EXPECT(   e2 >  v1  ); }
+    SECTION( "engaged >= value"   ) { EXPECT(   e1 >= v1  ); }
+    SECTION( "engaged >= value"   ) { EXPECT(   e2 >= v1  ); }
+
+    SECTION( "value   == engaged" ) { EXPECT(   v1 == e1  ); }
+    SECTION( "value   != engaged" ) { EXPECT(   v2 != e1  ); }
+    SECTION( "value   <  engaged" ) { EXPECT(   v1 <  e2  ); }
+    SECTION( "value   <= engaged" ) { EXPECT(   v1 <= e1  ); }
+    SECTION( "value   <= engaged" ) { EXPECT(   v1 <= e2  ); }
+    SECTION( "value   >  engaged" ) { EXPECT(   v2 >  e1  ); }
+    SECTION( "value   >= engaged" ) { EXPECT(   v1 >= e1  ); }
+    SECTION( "value   >= engaged" ) { EXPECT(   v2 >= e1  ); }
+    }
+#else
+    EXPECT( !!"value_ptr: value comparison is not available (nsvp_CONFIG_COMPARE_POINTERS is non-zero)" );
+#endif
 }
 
 CASE( "make_value: Allows to copy-construct value_ptr" )
