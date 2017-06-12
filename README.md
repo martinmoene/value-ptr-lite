@@ -65,9 +65,9 @@ int main()
 
 In a nutshell
 -------------
-**value-ptr lite** is a single-file header-only library to bring value semantics to heap resources. In certain situations, such as with the pimpl idiom in the example above, a pointer must be used while value semantics would be prefered. This is where `value_ptr` comes into play. A `value_ptr` is similar to a `std::optional` in many respects and one could say a `value_ptr` is more value than pointer.  
+**value-ptr lite** is a single-file header-only library to bring value semantics to heap resources. In certain situations, such as with the pimpl idiom in the example above, a pointer must be used while value semantics would be prefered. This is where `value_ptr` comes into play. A `value_ptr` is similar to a `std::optional` in many respects and one could say a `value_ptr` is more value than pointer.
 
-**Features and properties of value-ptr lite** are ease of installation (single header), freedom of dependencies other than the standard library.
+**Features and properties of value-ptr lite** are ease of installation (single header), freedom of dependencies other than the standard library. *value-ptr lite* shares the approach to in-place tags with any-lite, optional-lite and with variant-lite and these libraries can be used together.
 
 **Limitations of value-ptr lite** are ... .
 
@@ -98,47 +98,83 @@ Synopsis
 
 ### Types in namespace nonstd
 
-| Purpose               | Type | Notes |
-|-----------------------|------|-------|
-| Smart pointer with<br>value semantics | class value_ptr  | &nbsp; |
-| In-place construction | struct in_place_tag              | &nbsp; |
-| &nbsp;                | in_place                         | select type or index for in-place construction |
-| &nbsp;                | nonstd_lite_in_place_type_t( T)  | macro for alias template in_place_type_t&lt;T>  |
-| &nbsp;                | nonstd_lite_in_place_index_t( T )| macro for alias template in_place_index_t&lt;T> |
+| Purpose          |[[1]](#ref1) | [[2]](#ref2)| Type | Notes |
+|------------------|:-----------:|:------:|------|-------|
+| Smart pointer with<br>value semantics |&#10003;|&#10003;| class value_ptr  | [2]: impl_ptr |
+| In-place construction |&ndash; |&ndash; | struct in_place_tag              | &nbsp; |
+| &nbsp;                |&ndash; |&ndash; | in_place                         | select type or index for in-place construction |
+| &nbsp;                |&ndash; |&ndash; | nonstd_lite_in_place_type_t( T)  | macro for alias template in_place_type_t&lt;T>  |
+| &nbsp;                |&ndash; |&ndash; | nonstd_lite_in_place_index_t( T )| macro for alias template in_place_index_t&lt;T> |
 
 ### Interface of *value-ptr lite*
 
 #### Class `value_ptr`
 
-| Kind |[[1]](#ref1)| Type / Method | Note / Result |
-|-------|:------:|-----------------------------|---------------|
-| Value types    |&#10003;| element_type           |&nbsp; |
-| &nbsp;         |&#10003;| pointer                |&nbsp; |
-| &nbsp;         |&#10003;| reference              |&nbsp; |
-| &nbsp;         |&#10003;| const_pointer          |&nbsp; |
-| &nbsp;         |&#10003;| const_reference        |&nbsp; |
-| Lifetime types |&#10003;| cloner_type            |&nbsp; |
-| &nbsp;         |&#10003;| deleter_type           |&nbsp; |
-| Construction   |&nbsp;  |&nbsp;| &nbsp;|
-| &nbsp;         |&#10003;| ...  | ...   |
+| Kind      |[[1]](#ref1) | [[2]](#ref2)|std| Type / Method | Note / Result |
+|-----------|:-----------:|:------:|--------|------------|---------------|
+| Value types    |&#10003;|&#10003;| &nbsp; | element_type    |&nbsp; |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | pointer         |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | reference       |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | const_pointer   |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | const_reference |&nbsp; |
+| Lifetime types |&#10003;|&ndash; | &nbsp; | cloner_type     |[2]: copier_type |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | deleter_type    |&nbsp; |
+| Construction   |&#10003;|&#10003;| &nbsp; | constexpr value_ptr() noexcept |...   |
+| &nbsp;         |&ndash; |&#10003;| C++11  | constexpr value_ptr( std::nullptr_t ) noexcept|... |
+| &nbsp;         |&#10003;|&ndash; | &nbsp; | value_ptr( element_type const & value ) noexcept  |... |
+| &nbsp;         |&#10003;|&ndash; | C++11  | value_ptr( element_type && value ) noexcept |... |
+| &nbsp;         |&ndash; |&ndash; | C++11  | template< class... Args ><br>explicit value_ptr( in_place_type_t(T), Args&&... args ) |... |
+| &nbsp;         |&ndash; |&ndash; | C++11  | template< class U, class... Args ><br>explicit value_ptr( in_place_type_t(T), std::initializer_list&lt;U> il, Args&&... args ) |... |
+| &nbsp;         |&#10003;|&ndash; | &nbsp; | value_ptr( cloner_type const & cloner ) |... |
+| &nbsp;         |&#10003;|&ndash; | C++11  | value_ptr( cloner_type && cloner ) |... |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | value_ptr( deleter_type const & deleter ) |... |
+| &nbsp;         |&ndash; |&ndash; | C++11  | value_ptr( deleter_type && deleter ) |... |
+| &nbsp;         |&#10003;|&ndash; | C++11  | template< class V, class ClonerOrDeleter ><br>value_ptr( V && value, ClonerOrDeleter && cloner_or_deleter ) |... |
+| &nbsp;         |&ndash; |&ndash; |<C++11  | template< class V, class ClonerOrDeleter ><br>value_ptr( V const & value, ClonerOrDeleter const & cloner_or_deleter ) |... |
+| &nbsp;         |&#10003;|&ndash; | C++11  | template< class V, class C, class D ><br>value_ptr( V && value, C && cloner, D && deleter ) |... |
+| &nbsp;         |&ndash; |&ndash; |<C++11  | template< class V, class C, class D ><br>value_ptr( V const & value, C const & cloner, D const & deleter ) |... |
+| &nbsp;         |&#10003;|&ndash; | &nbsp; | value_ptr( pointer p ) |... |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | value_ptr( value_ptr const & other ) |... |
+| &nbsp;         |&#10003;|&#10003;| C++11  | value_ptr( value_ptr && other ) |... |
+| Destruction    |&ndash; |&ndash; | C++11  | ~value_ptr() |... |
+| Assignment     |&ndash; |&ndash; | C++11  | value_ptr & operator=( std::nullptr_t ) |... |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | value_ptr & operator=( T const & value ) |... |
+| &nbsp;         |&ndash; |&ndash; | C++11  | template< class U, ... ><br>value_ptr & operator=( U && value ) |... |
+| &nbsp;         |&ndash; |&#10003;| &nbsp; | value_ptr & operator=( value_ptr const & rhs ) |... |
+| &nbsp;         |&ndash; |&#10003;| C++11  | value_ptr & operator=( value_ptr && rhs ) noexcept |... |
+| Emplace        |&ndash; |&ndash; | C++11  | template< class... Args ><br>void emplace( Args&&... args ) |... |
+| &nbsp;         |&ndash; |&ndash; | C++11  | template< class U, class... Args ><br>void emplace( std::initializer_list&lt;U> il, Args&&... args ) |... |
+| Observers      |&#10003;|&#10003;| &nbsp; | pointer get() noexcept |... |
+| &nbsp;         |&#10003;|&ndash; | &nbsp; | const_pointer get() const noexcept |... |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | cloner_type & get_cloner() noexcept |[2]: get_copier() |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | deleter_type & get_deleter() noexcept |... |
+| &nbsp;         |&#10003;|&#10003;| C++11  | explicit operator bool() const noexcept |... |
+| &nbsp;         |&ndash; |&ndash; |<C++11  | constexpr operator safe_bool() const noexcept |... |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | reference operator*() |... |
+| &nbsp;         |&#10003;|&ndash; | &nbsp; | const_reference operator*() const |... |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | pointer operator->() noexcept |... |
+| &nbsp;         |&#10003;|&ndash; | &nbsp; | const_pointer operator->() const noexcept |... |
+| Modifiers      |&#10003;|&#10003;| &nbsp; | pointer release() noexcept |... |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | void reset( pointer p = pointer() ) noexcept |... |
+| &nbsp;         |&ndash; |&#10003;| &nbsp; | void swap( value_ptr & other ) noexcept |... |
 
 ### Non-member functions for *value-ptr lite*
 
-| Kind                 |[[1]](#ref1)| std  | Function |
-|--------------------------|:------:|:----:|----------|
-| Relational operators     |&nbsp;  |&nbsp;| &nbsp;   |
-| &nbsp;                   |&#10003;| ..   | ...      |
-| Swap                     |&nbsp;  |&nbsp;| template< class T, class C, class D ><br>void swap( value_ptr&lt;T,C,D> & x, value_ptr&lt;T,C,D> & y ) noexcept(...) |
-| Create                   |&nbsp;  |<C++11| template< class T, class C, class D ><br>value_ptr&lt;T,C,D> make_value( T const & v )      |
-| &nbsp;                   |&nbsp;  | C++11| template< class T ><br>value_ptr< typename std::decay&lt;T>::type > make_value( T && v ) |
-| &nbsp;                   |&nbsp;  | C++11| template< class T, class...Args ><br>value_ptr&lt;T,C,D> make_value( Args&&... args ) |
-| &nbsp;                   |&nbsp;  | C++11| template< class T, class U, class... Args ><br>value_ptr&lt;T,C,D> make_value( std::initializer_list&lt;U> il, Args&&... args ) |
-| Hash                     |&nbsp;  | C++11| template< class T ><br>class hash< nonstd::value_ptr&lt;T,C,D> > |
+| Kind                 |[[1]](#ref1)| [[2]](#ref2)| std  | Function |
+|--------------------------|:------:|:------:|:----:|----------|
+| Relational operators     |&nbsp;  |&nbsp;  |&nbsp;| &nbsp; |
+| &nbsp;                   |&ndash; |&#10003;| ...  | template< ... ><br>bool operator _op_( value_ptr<...> const & lhs, value_ptr<...> const & rhs ) |
+| Swap                     |&ndash; |&#10003;|&nbsp;| template< class T, class C, class D ><br>void swap( value_ptr&lt;T,C,D> & x, value_ptr&lt;T,C,D> & y ) noexcept(...) |
+| Create                   |&ndash; |&ndash; |<C++11| template< class T, class C, class D ><br>value_ptr&lt;T,C,D> make_value( T const & v )      |
+| &nbsp;                   |&ndash; |&ndash; | C++11| template< class T ><br>value_ptr< typename std::decay&lt;T>::type > make_value( T && v ) |
+| &nbsp;                   |&ndash; |&ndash; | C++11| template< class T, class...Args ><br>value_ptr&lt;T,C,D> make_value( Args&&... args ) |
+| &nbsp;                   |&ndash; |&ndash; | C++11| template< class T, class U, class... Args ><br>value_ptr&lt;T,C,D> make_value( std::initializer_list&lt;U> il, Args&&... args ) |
+| Hash                     |&ndash; |&#10003;| C++11| template< class T ><br>class hash< nonstd::value_ptr&lt;T,C,D> > |
 
 
 ### Configuration macros
 
--D<b>nsvp_CONFIG_COMPARE_POINTERS</b>=0  
+-D<b>nsvp_CONFIG_COMPARE_POINTERS</b>=0
 Define this to 1 to compare `value_ptr`'s pointer instead of the content it's pointing to. Default is 0.
 
 
