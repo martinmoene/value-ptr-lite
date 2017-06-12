@@ -811,7 +811,7 @@ namespace compare_pointers {
     };
 }
 
-CASE( "value_ptr: Provides relational operators (value_ptr pointer comparison, non-member)" )
+CASE( "value_ptr: Provides relational operators (non-member, value_ptr pointer comparison: nsvp_CONFIG_COMPARE_POINTERS!=0)" )
 {
 #if nsvp_CONFIG_COMPARE_POINTERS
     using namespace compare_pointers;
@@ -842,7 +842,7 @@ CASE( "value_ptr: Provides relational operators (value_ptr pointer comparison, n
 #endif
 }
 
-CASE( "value_ptr: Provides relational operators (value_ptr value comparison, non-member)" )
+CASE( "value_ptr: Provides relational operators (non-member, value_ptr value comparison: nsvp_CONFIG_COMPARE_POINTERS==0)" )
 {
 #if ! nsvp_CONFIG_COMPARE_POINTERS
     using namespace compare_pointers;
@@ -890,7 +890,7 @@ CASE( "value_ptr: Provides relational operators (value_ptr value comparison, non
 #endif
 }
 
-CASE( "value_ptr: Provides relational operators (value_ptr-value value comparison, non-member)" )
+CASE( "value_ptr: Provides relational operators (non-member, value_ptr-value value comparison: nsvp_CONFIG_COMPARE_POINTERS==0)" )
 {
 #if ! nsvp_CONFIG_COMPARE_POINTERS
     using namespace compare_pointers;
