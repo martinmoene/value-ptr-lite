@@ -762,9 +762,9 @@ inline value_ptr<T> make_value( std::initializer_list<U> il, Args&&... args )
 #else
 
 template< typename T >
-inline value_ptr<T> make_value( T const & v )
+inline value_ptr<T> make_value( T const & value )
 {
-    return value_ptr<T>( v );
+    return value_ptr<T>( value );
 }
 
 #endif // optional_CPP11_OR_GREATER
@@ -940,7 +940,6 @@ inline bool operator==(
     value_ptr<T1, D1, C1> const & lhs,
     value_ptr<T2, D2, C2> const & rhs )
 {
-//    return *lhs == *rhs;
     return bool(lhs) != bool(rhs) ? false : bool(lhs) == false ? true : *lhs == *rhs;
 }
 
@@ -1011,75 +1010,75 @@ inline bool operator>=(
 // compare with value:
 
 template< class T, class C, class D >
-bool operator==( value_ptr<T,C,D> const & x, const T & v )
+bool operator==( value_ptr<T,C,D> const & vp, T const & value )
 {
-    return bool(x) ? *x == v : false;
+    return bool(vp) ? *vp == value : false;
 }
 
 template< class T, class C, class D >
-bool operator==( T const & v, value_ptr<T,C,D> const & x )
+bool operator==( T const & value, value_ptr<T,C,D> const & vp )
 {
-    return bool(x) ? v == *x : false;
+    return bool(vp) ? value == *vp : false;
 }
 
 template< class T, class C, class D >
-bool operator!=( value_ptr<T,C,D> const & x, const T & v )
+bool operator!=( value_ptr<T,C,D> const & vp, T const & value )
 {
-    return bool(x) ? *x != v : true;
+    return bool(vp) ? *vp != value : true;
 }
 
 template< class T, class C, class D >
-bool operator!=( T const & v, value_ptr<T,C,D> const & x )
+bool operator!=( T const & value, value_ptr<T,C,D> const & vp )
 {
-    return bool(x) ? v != *x : true;
+    return bool(vp) ? value != *vp : true;
 }
 
 template< class T, class C, class D >
-bool operator<( value_ptr<T,C,D> const & x, const T & v )
+bool operator<( value_ptr<T,C,D> const & vp, T const & value )
 {
-    return bool(x) ? *x < v : true;
+    return bool(vp) ? *vp < value : true;
 }
 
 template< class T, class C, class D >
-bool operator<( T const & v, value_ptr<T,C,D> const & x )
+bool operator<( T const & value, value_ptr<T,C,D> const & vp )
 {
-    return bool(x) ? v < *x : false;
+    return bool(vp) ? value < *vp : false;
 }
 
 template< class T, class C, class D >
-bool operator<=( value_ptr<T,C,D> const & x, const T & v )
+bool operator<=( value_ptr<T,C,D> const & vp, T const & value )
 {
-    return bool(x) ? *x <= v : true;
+    return bool(vp) ? *vp <= value : true;
 }
 
 template< class T, class C, class D >
-bool operator<=( T const & v, value_ptr<T,C,D> const & x )
+bool operator<=( T const & value, value_ptr<T,C,D> const & vp )
 {
-    return bool(x) ? v <= *x : false;
+    return bool(vp) ? value <= *vp : false;
 }
 
 template< class T, class C, class D >
-bool operator>( value_ptr<T,C,D> const & x, const T & v )
+bool operator>( value_ptr<T,C,D> const & vp, T const & value )
 {
-    return bool(x) ? *x > v : false;
+    return bool(vp) ? *vp > value : false;
 }
 
 template< class T, class C, class D >
-bool operator>( T const & v, value_ptr<T,C,D> const & x )
+bool operator>( T const & value, value_ptr<T,C,D> const & vp )
 {
-    return bool(x) ? v > *x : true;
+    return bool(vp) ? value > *vp : true;
 }
 
 template< class T, class C, class D >
-bool operator>=( value_ptr<T,C,D> const & x, const T & v )
+bool operator>=( value_ptr<T,C,D> const & vp, T const & value )
 {
-    return bool(x) ? *x >= v : false;
+    return bool(vp) ? *vp >= value : false;
 }
 
 template< class T, class C, class D >
-bool operator>=( T const & v, value_ptr<T,C,D> const & x )
+bool operator>=( T const & value, value_ptr<T,C,D> const & vp )
 {
-    return bool(x) ? v >= *x : true;
+    return bool(vp) ? value >= *vp : true;
 }
 
 #endif // nsvp_CONFIG_COMPARE_POINTERS
