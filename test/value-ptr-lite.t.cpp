@@ -125,6 +125,12 @@ CASE( "C++ language: presence of C++ language features" "[.stdlanguage]" )
 #else
     nsvp_ABSENT(  nsvp_HAVE_NULLPTR );
 #endif
+
+#if nsvp_HAVE_REF_QUALIFIER
+    nsvp_PRESENT( nsvp_HAVE_REF_QUALIFIER );
+#else
+    nsvp_ABSENT(  nsvp_HAVE_REF_QUALIFIER );
+#endif
 }
 
 CASE( "C++ library: presence of C++ library features" "[.stdlibrary]" )

@@ -21,6 +21,7 @@
 #include <cassert>
 #include <functional>
 #include <memory>
+#include <stdexcept>
 #include <utility>
 
 #define  value_ptr_lite_VERSION "0.0.0"
@@ -84,6 +85,7 @@
 # define nsvp_HAVE_IS_DEFAULT  1
 # define nsvp_HAVE_IS_DELETE  1
 # define nsvp_HAVE_NOEXCEPT  1
+# define nsvp_HAVE_REF_QUALIFIER  1
 #endif
 
 // Presence of C++14 language features:
@@ -163,6 +165,14 @@
 # define nsvp_nullptr nullptr
 #else
 # define nsvp_nullptr NULL
+#endif
+
+#if nsvp_HAVE_REF_QUALIFIER
+# define nsvp_ref_qual  &
+# define nsvp_refref_qual  &&
+#else
+# define nsvp_ref_qual  /*&*/
+# define nsvp_refref_qual  /*&&*/
 #endif
 
 // additional includes:
@@ -477,6 +487,16 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
 } // namespace detail
 
 //
+// value_ptr access error
+//
+class bad_value_access : public std::logic_error
+{
+public:
+    explicit bad_value_access()
+    : logic_error( "bad value_ptr access" ) {}
+};
+
+//
 // class value_ptr:
 //
 template
@@ -591,7 +611,7 @@ public:
     value_ptr( value_ptr && other )
     : ptr( std::move( other.ptr ) )
     {}
-#endif // optional_CPP11_OR_GREATER
+#endif // nsvp_CPP11_OR_GREATER
 
 #if nsvp_HAVE_NULLPTR
     value_ptr & operator=( std::nullptr_t )
@@ -655,7 +675,7 @@ public:
         ptr.reset( T( il, std::forward<Args>(args)...) );
     }
 
-#endif // optional_CPP11_OR_GREATER
+#endif // nsvp_CPP11_OR_GREATER
 
     // Observers:
 
@@ -679,23 +699,6 @@ public:
         return ptr.get_deleter();
     }
 
-#if  nsvp_CPP11_OR_GREATER
-    explicit operator bool() const nsvp_noexcept
-    {
-        return !! get();
-    }
-#else
-private:
-    typedef void (value_ptr::*safe_bool)() const;
-    void this_type_does_not_support_comparisons() const {}
-
-public:
-    nsvp_constexpr operator safe_bool() const nsvp_noexcept
-    {
-        return (!! get() ) ? &value_ptr::this_type_does_not_support_comparisons : 0;
-    }
-#endif
-
     reference operator*()
     {
         assert( get() != nsvp_nullptr ); return *get();
@@ -715,6 +718,62 @@ public:
     {
         assert( get() != nsvp_nullptr ); return get();
     }
+
+#if  nsvp_CPP11_OR_GREATER
+    explicit operator bool() const nsvp_noexcept
+    {
+        return has_value();
+    }
+#else
+private:
+    typedef void (value_ptr::*safe_bool)() const;
+    void this_type_does_not_support_comparisons() const {}
+
+public:
+    nsvp_constexpr operator safe_bool() const nsvp_noexcept
+    {
+        return has_value() ? &value_ptr::this_type_does_not_support_comparisons : 0;
+    }
+#endif
+
+    bool has_value() const nsvp_noexcept
+    {
+        return !! get();
+    }
+
+    element_type const & value() const
+    {
+        if ( ! has_value() )
+            throw bad_value_access();
+
+        return *get();
+    }
+
+    element_type & value()
+    {
+        if ( ! has_value() )
+            throw bad_value_access();
+
+        return *get();
+    }
+
+#if nsvp_CPP11_OR_GREATER
+
+    template< class U >
+    nsvp_constexpr element_type value_or( U && v ) const
+    {
+        return has_value() ? value() : static_cast<element_type>(std::forward<U>( v ) );
+    }
+
+#else
+
+    template< class U >
+    nsvp_constexpr element_type value_or( U const & v ) const
+    {
+        return has_value() ? value() : static_cast<element_type>( v );
+    }
+
+#endif // nsvp_CPP11_OR_GREATER
 
     // Modifiers:
 
@@ -767,7 +826,7 @@ inline value_ptr<T> make_value( T const & value )
     return value_ptr<T>( value );
 }
 
-#endif // optional_CPP11_OR_GREATER
+#endif // nsvp_CPP11_OR_GREATER
 
 // Comparison between value_ptr-s:
 

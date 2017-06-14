@@ -101,6 +101,7 @@ Synopsis
 | Purpose          |[[1]](#ref1) | [[2]](#ref2)| Type | Notes |
 |------------------|:-----------:|:------:|------|-------|
 | Smart pointer with<br>value semantics |&#10003;|&#10003;| class value_ptr  | [2]: impl_ptr |
+| Error reporting       |&ndash; |&ndash; | class bad_value_access           | &nbsp; |
 | In-place construction |&ndash; |&ndash; | struct in_place_tag              | &nbsp; |
 | &nbsp;                |&ndash; |&ndash; | in_place                         | select type or index for in-place construction |
 | &nbsp;                |&ndash; |&ndash; | nonstd_lite_in_place_type_t( T)  | macro for alias template in_place_type_t&lt;T>  |
@@ -121,8 +122,8 @@ Synopsis
 | &nbsp;         |&#10003;|&#10003;| &nbsp; | deleter_type    |&nbsp; |
 | Construction   |&#10003;|&#10003;| &nbsp; | constexpr value_ptr() noexcept |...   |
 | &nbsp;         |&ndash; |&#10003;| C++11  | constexpr value_ptr( std::nullptr_t ) noexcept|... |
-| &nbsp;         |&#10003;|&ndash; | &nbsp; | value_ptr( element_type const & value ) noexcept  |... |
-| &nbsp;         |&#10003;|&ndash; | C++11  | value_ptr( element_type && value ) noexcept |... |
+| &nbsp;         |&#10003;|    1   | &nbsp; | value_ptr( element_type const & value ) noexcept  |... |
+| &nbsp;         |&#10003;|    1   | C++11  | value_ptr( element_type && value ) noexcept |... |
 | &nbsp;         |&ndash; |&ndash; | C++11  | template< class... Args ><br>explicit value_ptr( in_place_type_t(T), Args&&... args ) |... |
 | &nbsp;         |&ndash; |&ndash; | C++11  | template< class U, class... Args ><br>explicit value_ptr( in_place_type_t(T), std::initializer_list&lt;U> il, Args&&... args ) |... |
 | &nbsp;         |&#10003;|&ndash; | &nbsp; | value_ptr( cloner_type const & cloner ) |... |
@@ -154,16 +155,27 @@ Synopsis
 | &nbsp;         |&#10003;|&ndash; | &nbsp; | const_reference operator*() const |... |
 | &nbsp;         |&#10003;|&#10003;| &nbsp; | pointer operator->() noexcept |... |
 | &nbsp;         |&#10003;|&ndash; | &nbsp; | const_pointer operator->() const noexcept |... |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | bool has_value() const nsvp_noexcept |... |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | element_type const & value() const |... |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | element_type & value() |... |
+| &nbsp;         |&ndash; |&ndash; | C++11  | template< class U ><br>constexpr element_type value_or( U && v ) const |... |
+| &nbsp;         |&ndash; |&ndash; |<C++11  | template< class U ><br>constexpr element_type value_or( U const & v ) const |... |
 | Modifiers      |&#10003;|&#10003;| &nbsp; | pointer release() noexcept |... |
 | &nbsp;         |&ndash; |&ndash; | &nbsp; | void reset( pointer p = pointer() ) noexcept |... |
 | &nbsp;         |&ndash; |&#10003;| &nbsp; | void swap( value_ptr & other ) noexcept |... |
+
+**Notes:**<br>
+1. [2] has various converting constructors.
 
 ### Non-member functions for *value-ptr lite*
 
 | Kind                 |[[1]](#ref1)| [[2]](#ref2)| std  | Function |
 |--------------------------|:------:|:------:|:----:|----------|
-| Relational operators     |&nbsp;  |&nbsp;  |&nbsp;| &nbsp; |
-| &nbsp;                   |&ndash; |&#10003;| ...  | template< ... ><br>bool operator _op_( value_ptr<...> const & lhs, value_ptr<...> const & rhs ) |
+| Relational operators     |&ndash; |&#10003;|&nbsp;| template< ... ><br>bool operator _op_( value_ptr<...> const & lhs, value_ptr<...> const & rhs ) |
+| &nbsp;                   |&ndash; |&#10003;|C++11 | template< ... ><br>bool operator _op_( value_ptr<...> const & lhs, std::nullptr_t ) |
+| &nbsp;                   |&ndash; |&#10003;|C++11 | template< ... ><br>bool operator _op_( std::nullptr_t, value_ptr<...> const & rhs ) |
+| &nbsp;                   |&ndash; |&ndash; |&nbsp;| template< ... ><br>bool operator _op_( value_ptr<...> const & lhs, T const & value ) |
+| &nbsp;                   |&ndash; |&ndash; |&nbsp;| template< ... ><br>bool operator _op_( T const & value, value_ptr<...> const & rhs ) |
 | Swap                     |&ndash; |&#10003;|&nbsp;| template< class T, class C, class D ><br>void swap( value_ptr&lt;T,C,D> & x, value_ptr&lt;T,C,D> & y ) noexcept(...) |
 | Create                   |&ndash; |&ndash; |<C++11| template< class T, class C, class D ><br>value_ptr&lt;T,C,D> make_value( T const & v )      |
 | &nbsp;                   |&ndash; |&ndash; | C++11| template< class T ><br>value_ptr< typename std::decay&lt;T>::type > make_value( T && v ) |
@@ -275,14 +287,19 @@ value_ptr: Allows to obtain pointer to value via operator->()
 value_ptr: Allows to obtain value via operator*()
 value_ptr: Allows to obtain moved-value via operator*()
 value_ptr: Allows to obtain engaged state via operator bool()
+value_ptr: Allows to obtain engaged state via has_value()
+value_ptr: Allows to obtain value via value()
+value_ptr: Allows to obtain value or default via value_or()
+value_ptr: Allows to obtain moved-default via value_or() (C++11)
+value_ptr: Throws bad_value_access at disengaged access
 value_ptr: Allows to release its content
 value_ptr: Allows to clear its content (reset)
 value_ptr: Allows to replace its content (reset)
 value_ptr: Allows to swap with other value_ptr (member)
 value_ptr: Allows to swap with other value_ptr (non-member)
-value_ptr: Provides relational operators (non-member, value_ptr pointer comparison: nsvp_CONFIG_COMPARE_POINTERS!=0)
-value_ptr: Provides relational operators (non-member, value_ptr value comparison: nsvp_CONFIG_COMPARE_POINTERS==0)
-value_ptr: Provides relational operators (non-member, value_ptr-value value comparison: nsvp_CONFIG_COMPARE_POINTERS==0)
+value_ptr: Provides relational operators (non-member, pointer comparison: nsvp_CONFIG_COMPARE_POINTERS!=0)
+value_ptr: Provides relational operators (non-member, value comparison: nsvp_CONFIG_COMPARE_POINTERS==0)
+value_ptr: Provides relational operators (non-member, mixed value comparison: nsvp_CONFIG_COMPARE_POINTERS==0)
 make_value: Allows to copy-construct value_ptr
 make_value: Allows to move-construct value_ptr (C++11)
 make_value: Allows to in-place copy-construct value_ptr from arguments (C++11)
