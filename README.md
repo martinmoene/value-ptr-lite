@@ -122,6 +122,9 @@ Synopsis
 | &nbsp;         |&#10003;|&#10003;| &nbsp; | deleter_type    |&nbsp; |
 | Construction   |&#10003;|&#10003;| &nbsp; | constexpr value_ptr() noexcept |...   |
 | &nbsp;         |&ndash; |&#10003;| C++11  | constexpr value_ptr( std::nullptr_t ) noexcept|... |
+| &nbsp;         |&#10003;|&ndash; | &nbsp; | value_ptr( pointer p ) |... |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | value_ptr( value_ptr const & other ) |... |
+| &nbsp;         |&#10003;|&#10003;| C++11  | value_ptr( value_ptr && other ) |... |
 | &nbsp;         |&#10003;|    1   | &nbsp; | value_ptr( element_type const & value ) noexcept  |... |
 | &nbsp;         |&#10003;|    1   | C++11  | value_ptr( element_type && value ) noexcept |... |
 | &nbsp;         |&ndash; |&ndash; | C++11  | template< class... Args ><br>explicit value_ptr( in_place_type_t(T), Args&&... args ) |... |
@@ -134,9 +137,6 @@ Synopsis
 | &nbsp;         |&ndash; |&ndash; |<C++11  | template< class V, class ClonerOrDeleter ><br>value_ptr( V const & value, ClonerOrDeleter const & cloner_or_deleter ) |... |
 | &nbsp;         |&#10003;|&ndash; | C++11  | template< class V, class C, class D ><br>value_ptr( V && value, C && cloner, D && deleter ) |... |
 | &nbsp;         |&ndash; |&ndash; |<C++11  | template< class V, class C, class D ><br>value_ptr( V const & value, C const & cloner, D const & deleter ) |... |
-| &nbsp;         |&#10003;|&ndash; | &nbsp; | value_ptr( pointer p ) |... |
-| &nbsp;         |&#10003;|&#10003;| &nbsp; | value_ptr( value_ptr const & other ) |... |
-| &nbsp;         |&#10003;|&#10003;| C++11  | value_ptr( value_ptr && other ) |... |
 | Destruction    |&ndash; |&ndash; | C++11  | ~value_ptr() |... |
 | Assignment     |&ndash; |&ndash; | C++11  | value_ptr & operator=( std::nullptr_t ) |... |
 | &nbsp;         |&ndash; |&ndash; | &nbsp; | value_ptr & operator=( T const & value ) |... |

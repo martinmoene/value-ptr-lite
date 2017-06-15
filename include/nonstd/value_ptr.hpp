@@ -533,6 +533,20 @@ public:
     {}
 #endif
 
+    value_ptr( pointer p )
+    : ptr( p )
+    {}
+
+    value_ptr( value_ptr const & other )
+    : ptr( other.ptr )
+    {}
+
+#if nsvp_CPP11_OR_GREATER
+    value_ptr( value_ptr && other )
+    : ptr( std::move( other.ptr ) )
+    {}
+#endif
+
     value_ptr( element_type const & value ) nsvp_noexcept
     : ptr( value )
     {}
@@ -598,20 +612,6 @@ public:
     : ptr( value, cloner, deleter )
     {}
 #endif
-
-    value_ptr( pointer p )
-    : ptr( p )
-    {}
-
-    value_ptr( value_ptr const & other )
-    : ptr( other.ptr )
-    {}
-
-#if nsvp_CPP11_OR_GREATER
-    value_ptr( value_ptr && other )
-    : ptr( std::move( other.ptr ) )
-    {}
-#endif // nsvp_CPP11_OR_GREATER
 
 #if nsvp_HAVE_NULLPTR
     value_ptr & operator=( std::nullptr_t )
