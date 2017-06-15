@@ -192,6 +192,16 @@ Define this to 1 to compare `value_ptr`'s pointer instead of the content it's po
 
 Reported to work with
 ---------------------
+The table below mentions the compiler versions *value-ptr lite* is reported to work with.
+
+OS        | Compiler   | Versions |
+---------:|:-----------|:---------|
+Windows   | Clang/LLVM | ? |
+&nbsp;    | GCC        | 5.2.0, 6.3.0 |
+&nbsp;    | Visual C++<br>(Visual Studio)| 8 (2005), 10 (2010), 11 (2012),<br>12 (2013), 14 (2015, 2017) |
+GNU/Linux | Clang/LLVM | 3.5.0 |
+&nbsp;    | GCC        | 4.8.4 |
+OS X      | ?          | ?   |
 
 
 Building the tests
