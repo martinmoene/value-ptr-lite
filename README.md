@@ -120,8 +120,8 @@ Synopsis
 | &nbsp;         |&ndash; |&ndash; | &nbsp; | const_reference |&nbsp; |
 | Lifetime types |&#10003;|&ndash; | &nbsp; | cloner_type     |[2]: copier_type |
 | &nbsp;         |&#10003;|&#10003;| &nbsp; | deleter_type    |&nbsp; |
-| Construction   |&#10003;|&#10003;| &nbsp; | constexpr value_ptr() noexcept |...   |
-| &nbsp;         |&ndash; |&#10003;| C++11  | constexpr value_ptr( std::nullptr_t ) noexcept|... |
+| Construction   |&#10003;|&#10003;| &nbsp; | value_ptr() noexcept |...   |
+| &nbsp;         |&ndash; |&#10003;| C++11  | value_ptr( std::nullptr_t ) noexcept|... |
 | &nbsp;         |&#10003;|&ndash; | &nbsp; | value_ptr( pointer p ) noexcept |... |
 | &nbsp;         |&#10003;|&#10003;| &nbsp; | value_ptr( value_ptr const & other ) |... |
 | &nbsp;         |&#10003;|&#10003;| C++11  | value_ptr( value_ptr && other ) noexcept |... |
@@ -151,7 +151,7 @@ Synopsis
 | &nbsp;         |&#10003;|&#10003;| &nbsp; | reference operator*() const |... |
 | &nbsp;         |&#10003;|&#10003;| &nbsp; | pointer operator->() const noexcept |... |
 | &nbsp;         |&#10003;|&#10003;| C++11  | explicit operator bool() const noexcept |... |
-| &nbsp;         |&ndash; |&ndash; |<C++11  | constexpr operator safe_bool() const noexcept |... |
+| &nbsp;         |&ndash; |&ndash; |<C++11  | operator safe_bool() const noexcept |... |
 | &nbsp;         |&ndash; |&ndash; | &nbsp; | bool has_value() const nsvp_noexcept |... |
 | &nbsp;         |&ndash; |&ndash; | &nbsp; | element_type const & value() const |... |
 | &nbsp;         |&ndash; |&ndash; | &nbsp; | element_type & value() |... |
@@ -249,8 +249,8 @@ Other value-ptr implementations
 Notes and references
 --------------------
 
-<a id="ref1"></a>[1] Gaetano Checinski. [value_ptr — The Missing C++ Smart-pointer](https://hackernoon.com/value-ptr-the-missing-c-smart-pointer-1f515664153e) ([GitHub](https://github.com/LoopPerfect/valuable)). May 2017.
-<a id="ref2"></a>[2] Andrey Upadyshev. [PIMPL, Rule of Zero and Scott Meyers](http://oliora.github.io/2015/12/29/pimpl-and-rule-of-zero.html) ([GitHub](https://github.com/oliora/samples/blob/master/spimpl.h)). December 29, 2015.
+<a id="ref1"></a>[1] Gaetano Checinski. [value_ptr — The Missing C++ Smart-pointer](https://hackernoon.com/value-ptr-the-missing-c-smart-pointer-1f515664153e) ([GitHub](https://github.com/LoopPerfect/valuable)). May 2017.  
+<a id="ref2"></a>[2] Andrey Upadyshev. [PIMPL, Rule of Zero and Scott Meyers](http://oliora.github.io/2015/12/29/pimpl-and-rule-of-zero.html) ([GitHub](https://github.com/oliora/samples/blob/master/spimpl.h)). December 29, 2015.  
 
 Appendix
 --------

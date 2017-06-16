@@ -253,7 +253,7 @@ using std::default_delete;
 template< class T >
 struct default_delete
 {
-    nsvp_constexpr default_delete() nsvp_noexcept {};
+    default_delete() nsvp_noexcept {};
 
     void operator()( T * ptr ) const nsvp_noexcept
     {
@@ -523,12 +523,12 @@ public:
     ~value_ptr() = default;
 #endif
 
-    nsvp_constexpr value_ptr() nsvp_noexcept
+    value_ptr() nsvp_noexcept
     : ptr( cloner_type(), deleter_type() )
     {}
 
 #if nsvp_HAVE_NULLPTR
-    nsvp_constexpr value_ptr( std::nullptr_t ) nsvp_noexcept
+    value_ptr( std::nullptr_t ) nsvp_noexcept
     : ptr( cloner_type(), deleter_type() )
     {}
 #endif
@@ -715,7 +715,7 @@ private:
     void this_type_does_not_support_comparisons() const {}
 
 public:
-    nsvp_constexpr operator safe_bool() const nsvp_noexcept
+    operator safe_bool() const nsvp_noexcept
     {
         return has_value() ? &value_ptr::this_type_does_not_support_comparisons : 0;
     }
@@ -745,7 +745,7 @@ public:
 #if nsvp_CPP11_OR_GREATER
 
     template< class U >
-    nsvp_constexpr element_type value_or( U && v ) const
+    element_type value_or( U && v ) const
     {
         return has_value() ? value() : static_cast<element_type>(std::forward<U>( v ) );
     }
@@ -753,7 +753,7 @@ public:
 #else
 
     template< class U >
-    nsvp_constexpr element_type value_or( U const & v ) const
+    element_type value_or( U const & v ) const
     {
         return has_value() ? value() : static_cast<element_type>( v );
     }
