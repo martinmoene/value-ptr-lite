@@ -320,11 +320,11 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
         deleter_type()( ptr );
     }
 
-    compressed_ptr()
+    compressed_ptr() nsvp_noexcept
     : ptr( nsvp_nullptr )
     {}
 
-    compressed_ptr( pointer p )
+    compressed_ptr( pointer p ) nsvp_noexcept
     : ptr( p )
     {}
 
@@ -335,7 +335,7 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     {}
 
 #if  nsvp_CPP11_OR_GREATER
-    compressed_ptr( compressed_ptr && other )
+    compressed_ptr( compressed_ptr && other ) nsvp_noexcept
     : cloner_type ( std::move( other ) )
     , deleter_type( std::move( other ) )
     , ptr( std::move( other.ptr ) )
@@ -350,7 +350,7 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
 
 #if  nsvp_CPP11_OR_GREATER
 
-    compressed_ptr( element_type && value )
+    compressed_ptr( element_type && value ) nsvp_noexcept
     : ptr( cloner_type()( std::move( value ) ) )
     {}
 
@@ -372,7 +372,7 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     {}
 
 #if  nsvp_CPP11_OR_GREATER
-    compressed_ptr( element_type && value, cloner_type && cloner )
+    compressed_ptr( element_type && value, cloner_type && cloner ) nsvp_noexcept
     : cloner_type ( std::move( cloner  ) )
     , ptr( cloner_type()( std::move( value ) ) )
     {}
@@ -385,7 +385,7 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     {}
 
 #if  nsvp_CPP11_OR_GREATER
-    compressed_ptr( element_type && value, cloner_type && cloner, deleter_type && deleter )
+    compressed_ptr( element_type && value, cloner_type && cloner, deleter_type && deleter ) nsvp_noexcept
     : cloner_type ( std::move( cloner  ) )
     , deleter_type( std::move( deleter ) )
     , ptr( cloner_type()( std::move( value ) ) )
@@ -398,7 +398,7 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     {}
 
 #if  nsvp_CPP11_OR_GREATER
-    compressed_ptr( cloner_type && cloner )
+    compressed_ptr( cloner_type && cloner ) nsvp_noexcept
     : cloner_type( std::move( cloner ) )
     , ptr( nsvp_nullptr )
     {}
@@ -410,7 +410,7 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     {}
 
 # if  nsvp_CPP11_OR_GREATER
-    compressed_ptr( deleter_type && deleter )
+    compressed_ptr( deleter_type && deleter ) nsvp_noexcept
     : deleter_type( std::move( deleter ) )
     , ptr( nsvp_nullptr )
     {}
@@ -423,7 +423,7 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     {}
 
 #if  nsvp_CPP11_OR_GREATER
-    compressed_ptr( cloner_type && cloner, deleter_type && deleter )
+    compressed_ptr( cloner_type && cloner, deleter_type && deleter ) nsvp_noexcept
     : cloner_type ( std::move( cloner  ) )
     , deleter_type( std::move( deleter ) )
     , ptr( nsvp_nullptr )
@@ -463,13 +463,13 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
         ptr = p;
     }
 
-    void reset( element_type const & v ) nsvp_noexcept
+    void reset( element_type const & v )
     {
         reset( get_cloner()( v ) );
     }
 
 #if  nsvp_CPP11_OR_GREATER
-    void reset( element_type && v ) nsvp_noexcept
+    void reset( element_type && v )
     {
         reset( get_cloner()( std::move( v ) ) );
     }
@@ -533,7 +533,7 @@ public:
     {}
 #endif
 
-    value_ptr( pointer p )
+    value_ptr( pointer p ) nsvp_noexcept
     : ptr( p )
     {}
 
@@ -542,12 +542,12 @@ public:
     {}
 
 #if nsvp_CPP11_OR_GREATER
-    value_ptr( value_ptr && other )
+    value_ptr( value_ptr && other ) nsvp_noexcept
     : ptr( std::move( other.ptr ) )
     {}
 #endif
 
-    value_ptr( element_type const & value ) nsvp_noexcept
+    value_ptr( element_type const & value )
     : ptr( value )
     {}
 
@@ -574,7 +574,7 @@ public:
     {}
 
 #if  nsvp_CPP11_OR_GREATER
-    value_ptr( cloner_type && cloner )
+    value_ptr( cloner_type && cloner ) nsvp_noexcept
     : ptr( std::move( cloner ) )
     {}
 #endif
@@ -584,7 +584,7 @@ public:
     {}
 
 #if  nsvp_CPP11_OR_GREATER
-    value_ptr( deleter_type && deleter )
+    value_ptr( deleter_type && deleter ) nsvp_noexcept
     : ptr( std::move( deleter ) )
     {}
 #endif
@@ -614,7 +614,7 @@ public:
 #endif
 
 #if nsvp_HAVE_NULLPTR
-    value_ptr & operator=( std::nullptr_t )
+    value_ptr & operator=( std::nullptr_t ) nsvp_noexcept
     {
         ptr.reset( nullptr );
         return *this;
@@ -679,12 +679,7 @@ public:
 
     // Observers:
 
-    pointer get() nsvp_noexcept
-    {
-        return ptr.get();
-    }
-
-    const_pointer get() const nsvp_noexcept
+    pointer get() const nsvp_noexcept
     {
         return ptr.get();
     }
@@ -699,22 +694,12 @@ public:
         return ptr.get_deleter();
     }
 
-    reference operator*()
+    reference operator*() const
     {
         assert( get() != nsvp_nullptr ); return *get();
     }
 
-    const_reference operator*() const
-    {
-        assert( get() != nsvp_nullptr ); return *get();
-    }
-
-    pointer operator->() nsvp_noexcept
-    {
-        assert( get() != nsvp_nullptr ); return get();
-    }
-
-    const_pointer operator->() const nsvp_noexcept
+    pointer operator->() const nsvp_noexcept
     {
         assert( get() != nsvp_nullptr ); return get();
     }
