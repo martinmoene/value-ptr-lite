@@ -67,6 +67,8 @@ In a nutshell
 -------------
 **value-ptr lite** is a single-file header-only library to bring value semantics to heap resources. In certain situations, such as with the pimpl idiom in the example above, a pointer must be used while value semantics would be prefered. This is where `value_ptr` comes into play. A `value_ptr` is similar to a `std::optional` in many respects and one could say a `value_ptr` is more value than pointer.
 
+This work is inspired on `value_ptr` by Gaetano Checinski [[1]](#ref1) and on `impl_ptr` by Andrey Upadyshev [[2]](#ref2).
+
 **Features and properties of value-ptr lite** are ease of installation (single header), freedom of dependencies other than the standard library. *value-ptr lite* shares the approach to in-place tags with any-lite, optional-lite and with variant-lite and these libraries can be used together.
 
 **Limitations of value-ptr lite** are ... .
