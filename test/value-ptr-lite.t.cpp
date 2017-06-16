@@ -25,6 +25,12 @@ CASE( "value-ptr-lite version" "[.version]" )
 
 CASE( "C++ compiler: compiler version" "[.compiler]" )
 {
+#if nsvp_COMPILER_CLANG_VERSION
+    nsvp_PRESENT( nsvp_COMPILER_CLANG_VERSION );
+#else
+    nsvp_ABSENT(  nsvp_COMPILER_CLANG_VERSION );
+#endif
+
 #if nsvp_COMPILER_GNUC_VERSION
     nsvp_PRESENT( nsvp_COMPILER_GNUC_VERSION );
 #else

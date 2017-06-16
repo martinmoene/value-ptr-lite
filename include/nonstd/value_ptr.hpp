@@ -41,16 +41,22 @@
 // half-open range [lo..hi):
 #define nsvp_BETWEEN( v, lo, hi ) ( lo <= v && v < hi )
 
-#if defined(_MSC_VER) && !defined(__clang__)
-# define nsvp_COMPILER_MSVC_VERSION   (_MSC_VER / 100 - 5 - (_MSC_VER < 1900))
+#if defined(__clang__)
+# define nsvp_COMPILER_CLANG_VERSION  __clang__
 #else
-# define nsvp_COMPILER_MSVC_VERSION   0
+# define nsvp_COMPILER_CLANG_VERSION  0
 #endif
 
-#if defined __GNUC__
+#if defined(__GNUC__) && ! defined(__clang__)
 # define nsvp_COMPILER_GNUC_VERSION  __GNUC__
 #else
-# define nsvp_COMPILER_GNUC_VERSION    0
+# define nsvp_COMPILER_GNUC_VERSION  0
+#endif
+
+#if defined(_MSC_VER) && ! defined(__clang__)
+# define nsvp_COMPILER_MSVC_VERSION  (_MSC_VER / 100 - 5 - (_MSC_VER < 1900))
+#else
+# define nsvp_COMPILER_MSVC_VERSION  0
 #endif
 
 #if nsvp_BETWEEN(nsvp_COMPILER_MSVC_VERSION, 7, 14 )
