@@ -11,7 +11,7 @@ A C++ smart-pointer with value semantics for C++98, C++11 and later
 - [Installation](#installation)
 - [Synopsis](#synopsis)
 - [Reported to work with](#reported-to-work-with)
-- [Building the tests](#building-the-tests)
+- [Building tests and examples](#building-tests-and-examples)
 - [Other value_ptr implementations](#other-value-ptr-implementations)
 - [Notes and references](#notes-and-references)
 - [Appendix](#appendix)
@@ -203,42 +203,49 @@ GNU/Linux | Clang/LLVM | 3.1.0 - 4.0.0 (Wandbox) |
 OS X      | ?          | ?   |
 
 
-Building the tests
-------------------
+Building tests and examples
+---------------------------
+To build the tests and examples you need:
+
+- [Buck](https://buckbuild.com/) or [CMake](http://cmake.org) version 2.8.12 or later to be installed and in your PATH.
+- A [suitable compiler](#reported-to-work-with).
+
+The [*lest* test framework](https://github.com/martinmoene/lest)  is included in the [test folder](test).
+
+The following steps assume that the [*value_ptr lite* source code](https://github.com/martinmoene/value-ptr-lite) has been cloned into a directory named `value-ptr-lite`.
 
 ### Buck
 
-To run the tests:
+To run the tests and examples:
 ```
-prompt> buck run test/
+value-ptr-lite> buck run test
+value-ptr-lite> buck run example:01-pimpl
+value-ptr-lite> buck run example:02-tree
 ```
 
 ### CMake
 
-The following steps assume that the [value-ptr lite source code](https://github.com/martinmoene/value-ptr-lite) has been cloned into a directory named `c:\value-ptr-lite`.
-
 1. Create a directory for the build outputs for a particular architecture.
-Here we use c:\value-ptr-lite\build-win-x86-vc10.
+Here we use `value-ptr-lite/build`.
 
-        cd c:\value-ptr-lite
-        md build-win-x86-vc10
-        cd build-win-x86-vc10
+        value-ptr-lite> mkdir build && cd build
 
 2. Configure CMake to use the compiler of your choice (run `cmake --help` for a list).
 
-        cmake -G "Visual Studio 10 2010" [see 3. below] ..
+        value-ptr-lite/build> cmake -G "Unix Makefiles" [see 3. below] ..
 
 3. Optional. You can control above configuration through the following options:
-
-   - `-DRING_SPAN_LITE_COLOURISE_TEST=ON`: use colour for pass, fail, default off
+   - `-DVALUE_PTR_LITE_BUILD_TEST=ON`: build the tests for lest, default on
+   - `-DVALUE_PTR_LITE_BUILD_EXAMPLE=ON`: build the examples, default on
+   - `-DVALUE_PTR_LITE_COLOURISE_TEST=ON`: use colour for pass, fail, default off
 
 4. Build the test suite in the Debug configuration (alternatively use Release).
 
-        cmake --build . --config Debug
+        value-ptr-lite/build> cmake --build .
 
 5. Run the test suite.
 
-        ctest -V -C Debug
+        value-ptr-lite\build> ctest -V
 
 All tests should pass, indicating your platform is supported and you are ready to use *value-ptr lite*. See the table with [supported types and functions](#features).
 

@@ -8,7 +8,11 @@ cmake_minimum_required( VERSION 2.8.12 )
 
 project( test )
 
-include_directories( "${PROJECT_SOURCE_DIR}/../include/nonstd" )
+option( VALUE_PTR_LITE_COLOURISE_TEST "Colourise test output" OFF )
+
+if ( VALUE_PTR_LITE_COLOURISE_TEST )
+    add_compile_options( -Dlest_FEATURE_COLOURISE=1 )
+endif()
 
 set( SOURCES value-ptr-lite.t.cpp value-ptr.t.cpp )
 
@@ -64,11 +68,13 @@ elseif( ${CMAKE_CXX_COMPILER_ID} MATCHES GNU OR
         endif()
     endif()
 
+    add_compile_options( -Wall -Wno-missing-braces -Wno-unnamed-type-template-args -fno-elide-constructors )
+
     add_executable( value-ptr-lite-cpp98.t ${SOURCES} )
-    target_compile_options( value-ptr-lite-cpp98.t  PUBLIC -std=c++98 )
+    target_compile_options( value-ptr-lite-cpp98.t  PUBLIC -std=c++98 -Wno-unused-local-typedefs )
 
     add_executable( value-ptr-lite-cpp03.t ${SOURCES} )
-    target_compile_options( value-ptr-lite-cpp03.t  PUBLIC -std=c++03 )
+    target_compile_options( value-ptr-lite-cpp03.t  PUBLIC -std=c++03 -Wno-unused-local-typedefs )
 
     if( HAS_CPP11_FLAG )
         add_executable( value-ptr-lite-cpp11.t ${SOURCES} )
@@ -84,8 +90,6 @@ elseif( ${CMAKE_CXX_COMPILER_ID} MATCHES GNU OR
         add_executable( value-ptr-lite-cpp17.t ${SOURCES} )
         target_compile_options( value-ptr-lite-cpp17.t  PUBLIC -std=c++17 )
     endif()
-
-    add_compile_options( -Wall -Wno-missing-braces -Wno-unnamed-type-template-args -fno-elide-constructors )
 
 elseif( ${CMAKE_CXX_COMPILER_ID} MATCHES Intel )
 # as is
