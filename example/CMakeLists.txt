@@ -19,7 +19,7 @@ endforeach()
 
 # set compiler options:
 
-if( ${CMAKE_CXX_COMPILER_ID} MATCHES MSVC )
+if( CMAKE_CXX_COMPILER_ID MATCHES MSVC )
     foreach( name ${TARGETS} )
         target_compile_options( ${name} PUBLIC -W3 -EHsc )
     endforeach()
