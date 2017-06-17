@@ -239,13 +239,13 @@ Here we use `value-ptr-lite/build`.
    - `-DVALUE_PTR_LITE_BUILD_EXAMPLE=ON`: build the examples, default on
    - `-DVALUE_PTR_LITE_COLOURISE_TEST=ON`: use colour for pass, fail, default off
 
-4. Build the test suite in the Debug configuration (alternatively use Release).
+4. Build the test suite. With Visual Studio, append the configuration as `--config Debug` or `--config Release`.
 
         value-ptr-lite/build> cmake --build .
 
 5. Run the test suite.
 
-        value-ptr-lite\build> ctest -V
+        value-ptr-lite/build> ctest -V
 
 All tests should pass, indicating your platform is supported and you are ready to use *value-ptr lite*. See the table with [supported types and functions](#features).
 
