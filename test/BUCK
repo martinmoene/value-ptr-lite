@@ -1,0 +1,19 @@
+cxx_binary(
+  name = 'test',
+  header_namespace = '',
+  headers = glob([
+    '*.h',
+    '*.hpp',
+  ]),
+  srcs = glob([
+    'value-ptr.t.cpp',
+    'value-ptr-lite.t.cpp',
+  ]),
+  compiler_flags = [
+    '-EHsc',
+    '-Dlest_FEATURE_AUTO_REGISTER=1',
+  ],
+  deps = [
+    '//:value-ptr-lite',
+  ],
+)

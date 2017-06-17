@@ -11,9 +11,11 @@
 				<Option compiler="gcc" />
 			</Target>
 		</Build>
+		<Unit filename="../../.buckconfig" />
 		<Unit filename="../../.gitattributes" />
 		<Unit filename="../../.gitignore" />
 		<Unit filename="../../.travis.yml" />
+		<Unit filename="../../BUCK" />
 		<Unit filename="../../CHANGES.txt" />
 		<Unit filename="../../CMakeLists.txt" />
 		<Unit filename="../../LICENSE" />
@@ -21,7 +23,10 @@
 		<Unit filename="../../appveyor.yml" />
 		<Unit filename="../../example/01-pimpl.cpp" />
 		<Unit filename="../../example/02-tree.cpp" />
+		<Unit filename="../../example/BUCK" />
+		<Unit filename="../../example/CMakeLists.txt" />
 		<Unit filename="../../include/nonstd/value_ptr.hpp" />
+		<Unit filename="../../test/BUCK" />
 		<Unit filename="../../test/CMakeLists.txt" />
 		<Unit filename="../../test/lest_cpp03.hpp" />
 		<Unit filename="../../test/t.bat" />
