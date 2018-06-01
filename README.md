@@ -1,7 +1,7 @@
 # value-ptr lite
 A C++ smart-pointer with value semantics for C++98, C++11 and later
 
-[![Language](https://img.shields.io/badge/language-C++-blue.svg)](https://isocpp.org/)  [![Standard](https://img.shields.io/badge/c%2B%2B-98-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![Standard](https://img.shields.io/badge/c%2B%2B-11-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![Standard](https://img.shields.io/badge/c%2B%2B-14-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![Standard](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.org/martinmoene/value-ptr-lite.svg?branch=master)](https://travis-ci.org/martinmoene/value-ptr-lite) [![Build status](https://ci.appveyor.com/api/projects/status/w2dgn3fxyrd6vcq8?svg=true)](https://ci.appveyor.com/project/martinmoene/value-ptr-lite) [![Version](https://badge.fury.io/gh/martinmoene%2Fvalue-ptr-lite.svg)](https://github.com/martinmoene/value-ptr-lite/releases) [![download](https://img.shields.io/badge/latest%20version%20%20-download-blue.svg)](https://raw.githubusercontent.com/martinmoene/value-ptr-lite/master/include/nonstd/value_ptr.hpp)
+[![Language](https://img.shields.io/badge/language-C++-blue.svg)](https://isocpp.org/) [![Standard](https://img.shields.io/badge/c%2B%2B-98/11/14/17-blue.svg)](https://en.wikipedia.org/wiki/C%2B%2B#Standardization) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://travis-ci.org/martinmoene/value-ptr-lite.svg?branch=master)](https://travis-ci.org/martinmoene/value-ptr-lite) [![Build status](https://ci.appveyor.com/api/projects/status/w2dgn3fxyrd6vcq8?svg=true)](https://ci.appveyor.com/project/martinmoene/value-ptr-lite) [![Version](https://badge.fury.io/gh/martinmoene%2Fvalue-ptr-lite.svg)](https://github.com/martinmoene/value-ptr-lite/releases) [![download](https://img.shields.io/badge/latest%20version%20%20-download-blue.svg)](https://raw.githubusercontent.com/martinmoene/value-ptr-lite/master/include/nonstd/value_ptr.hpp)
 
 
 **Contents**
@@ -102,12 +102,12 @@ Synopsis
 
 | Purpose          |[[1]](#ref1) | [[2]](#ref2)| Type | Notes |
 |------------------|:-----------:|:------:|------|-------|
-| Smart pointer with<br>value semantics |&#10003;|&#10003;| class value_ptr  | [2]: impl_ptr |
-| Error reporting       |&ndash; |&ndash; | class bad_value_access           | &nbsp; |
-| In-place construction |&ndash; |&ndash; | struct in_place_tag              | &nbsp; |
-| &nbsp;                |&ndash; |&ndash; | in_place                         | select type or index for in-place construction |
-| &nbsp;                |&ndash; |&ndash; | nonstd_lite_in_place_type_t( T)  | macro for alias template in_place_type_t&lt;T>  |
-| &nbsp;                |&ndash; |&ndash; | nonstd_lite_in_place_index_t( T )| macro for alias template in_place_index_t&lt;T> |
+| Smart pointer with<br>value semantics |&#10003;|&#10003;| class **value_ptr**  | [2]: impl_ptr |
+| Error reporting       |&ndash; |&ndash; | class **bad_value_access**           | &nbsp; |
+| In-place construction |&ndash; |&ndash; | struct **in_place_tag**              | &nbsp; |
+| &nbsp;                |&ndash; |&ndash; | **in_place**                         | select type or index for in-place construction |
+| &nbsp;                |&ndash; |&ndash; | **nonstd_lite_in_place_type_t**( T)  | macro for alias template in_place_type_t&lt;T>  |
+| &nbsp;                |&ndash; |&ndash; | **nonstd_lite_in_place_index_t**( T )| macro for alias template in_place_index_t&lt;T> |
 
 ### Interface of *value-ptr lite*
 
@@ -115,53 +115,53 @@ Synopsis
 
 | Kind      |[[1]](#ref1) | [[2]](#ref2)|std| Type / Method | Note / Result |
 |-----------|:-----------:|:------:|--------|------------|---------------|
-| Value types    |&#10003;|&#10003;| &nbsp; | element_type    |&nbsp; |
-| &nbsp;         |&#10003;|&#10003;| &nbsp; | pointer         |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | &nbsp; | reference       |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | &nbsp; | const_pointer   |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | &nbsp; | const_reference |&nbsp; |
-| Lifetime types |&#10003;|&ndash; | &nbsp; | cloner_type     |[2]: copier_type |
-| &nbsp;         |&#10003;|&#10003;| &nbsp; | deleter_type    |&nbsp; |
-| Construction   |&#10003;|&#10003;| &nbsp; | value_ptr() noexcept |&nbsp; |
-| &nbsp;         |&ndash; |&#10003;| C++11  | value_ptr( std::nullptr_t ) noexcept|&nbsp; |
-| &nbsp;         |&#10003;|&ndash; | &nbsp; | value_ptr( pointer p ) noexcept |&nbsp; |
-| &nbsp;         |&#10003;|&#10003;| &nbsp; | value_ptr( value_ptr const & other ) |&nbsp; |
-| &nbsp;         |&#10003;|&#10003;| C++11  | value_ptr( value_ptr && other ) noexcept |&nbsp; |
-| &nbsp;         |&#10003;|    1   | &nbsp; | value_ptr( element_type const & value ) |&nbsp; |
-| &nbsp;         |&#10003;|    1   | C++11  | value_ptr( element_type && value ) noexcept |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | C++11  | template< class... Args ><br>explicit value_ptr( in_place_type_t(T), Args&&... args ) |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | C++11  | template< class U, class... Args ><br>explicit value_ptr( in_place_type_t(T), std::initializer_list&lt;U> il, Args&&... args ) |&nbsp; |
-| &nbsp;         |&#10003;|&ndash; | &nbsp; | value_ptr( cloner_type const & cloner ) |&nbsp; |
-| &nbsp;         |&#10003;|&ndash; | C++11  | value_ptr( cloner_type && cloner ) noexcept |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | &nbsp; | value_ptr( deleter_type const & deleter ) |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | C++11  | value_ptr( deleter_type && deleter ) noexcept |&nbsp; |
-| &nbsp;         |&#10003;|&ndash; | C++11  | template< class V, class ClonerOrDeleter ><br>value_ptr( V && value, ClonerOrDeleter && cloner_or_deleter ) |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; |<C++11  | template< class V, class ClonerOrDeleter ><br>value_ptr( V const & value, ClonerOrDeleter const & cloner_or_deleter ) |&nbsp; |
-| &nbsp;         |&#10003;|&ndash; | C++11  | template< class V, class C, class D ><br>value_ptr( V && value, C && cloner, D && deleter ) |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; |<C++11  | template< class V, class C, class D ><br>value_ptr( V const & value, C const & cloner, D const & deleter ) |&nbsp; |
-| Destruction    |&ndash; |&ndash; | C++11  | ~value_ptr() |&nbsp; |
-| Assignment     |&ndash; |&ndash; | C++11  | value_ptr & operator=( std::nullptr_t ) noexcept |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | &nbsp; | value_ptr & operator=( T const & value ) |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | C++11  | template< class U, ... ><br>value_ptr & operator=( U && value ) |&nbsp; |
-| &nbsp;         |&ndash; |&#10003;| &nbsp; | value_ptr & operator=( value_ptr const & rhs ) |&nbsp; |
-| &nbsp;         |&ndash; |&#10003;| C++11  | value_ptr & operator=( value_ptr && rhs ) noexcept |&nbsp; |
-| Emplace        |&ndash; |&ndash; | C++11  | template< class... Args ><br>void emplace( Args&&... args ) |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | C++11  | template< class U, class... Args ><br>void emplace( std::initializer_list&lt;U> il, Args&&... args ) |&nbsp; |
-| Observers      |&#10003;|&#10003;| &nbsp; | pointer get() noexcept |&nbsp; |
-| &nbsp;         |&#10003;|&#10003;| &nbsp; | cloner_type & get_cloner() noexcept |[2]: get_copier() |
-| &nbsp;         |&#10003;|&#10003;| &nbsp; | deleter_type & get_deleter() noexcept |&nbsp; |
-| &nbsp;         |&#10003;|&#10003;| &nbsp; | reference operator*() const |&nbsp; |
-| &nbsp;         |&#10003;|&#10003;| &nbsp; | pointer operator->() const noexcept |&nbsp; |
-| &nbsp;         |&#10003;|&#10003;| C++11  | explicit operator bool() const noexcept |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; |<C++11  | operator safe_bool() const noexcept |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | &nbsp; | bool has_value() const nsvp_noexcept |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | &nbsp; | element_type const & value() const |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | &nbsp; | element_type & value() |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | C++11  | template< class U ><br>constexpr element_type value_or( U && v ) const |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; |<C++11  | template< class U ><br>constexpr element_type value_or( U const & v ) const |&nbsp; |
-| Modifiers      |&#10003;|&#10003;| &nbsp; | pointer release() noexcept |&nbsp; |
-| &nbsp;         |&ndash; |&ndash; | &nbsp; | void reset( pointer p = pointer() ) noexcept |&nbsp; |
-| &nbsp;         |&ndash; |&#10003;| &nbsp; | void swap( value_ptr & other ) noexcept |&nbsp; |
+| Value types    |&#10003;|&#10003;| &nbsp; | **element_type**    |&nbsp; |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | **pointer**         |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | **reference**       |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | **const_pointer**   |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | **const_reference** |&nbsp; |
+| Lifetime types |&#10003;|&ndash; | &nbsp; | **cloner_type**     |[2]: copier_type |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | **deleter_type**    |&nbsp; |
+| Construction   |&#10003;|&#10003;| &nbsp; | **value_ptr**() noexcept |&nbsp; |
+| &nbsp;         |&ndash; |&#10003;| C++11  | **value_ptr**( std::nullptr_t ) noexcept|&nbsp; |
+| &nbsp;         |&#10003;|&ndash; | &nbsp; | **value_ptr**( pointer p ) noexcept |&nbsp; |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | **value_ptr**( value_ptr const & other ) |&nbsp; |
+| &nbsp;         |&#10003;|&#10003;| C++11  | **value_ptr**( value_ptr && other ) noexcept |&nbsp; |
+| &nbsp;         |&#10003;|    1   | &nbsp; | **value_ptr**( element_type const & value ) |&nbsp; |
+| &nbsp;         |&#10003;|    1   | C++11  | **value_ptr**( element_type && value ) noexcept |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | C++11  | template< class... Args ><br>explicit **value_ptr**( in_place_type_t(T), Args&&... args ) |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | C++11  | template< class U, class... Args ><br>explicit **value_ptr**( in_place_type_t(T), std::initializer_list&lt;U> il, Args&&... args ) |&nbsp; |
+| &nbsp;         |&#10003;|&ndash; | &nbsp; | **value_ptr**( cloner_type const & cloner ) |&nbsp; |
+| &nbsp;         |&#10003;|&ndash; | C++11  | **value_ptr**( cloner_type && cloner ) noexcept |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | **value_ptr**( deleter_type const & deleter ) |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | C++11  | **value_ptr**( deleter_type && deleter ) noexcept |&nbsp; |
+| &nbsp;         |&#10003;|&ndash; | C++11  | template< class V, class ClonerOrDeleter ><br>**value_ptr**( V && value, ClonerOrDeleter && cloner_or_deleter ) |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; |<C++11  | template< class V, class ClonerOrDeleter ><br>**value_ptr**( V const & value, ClonerOrDeleter const & cloner_or_deleter ) |&nbsp; |
+| &nbsp;         |&#10003;|&ndash; | C++11  | template< class V, class C, class D ><br>**value_ptr**( V && value, C && cloner, D && deleter ) |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; |<C++11  | template< class V, class C, class D ><br>**value_ptr**( V const & value, C const & cloner, D const & deleter ) |&nbsp; |
+| Destruction    |&ndash; |&ndash; | C++11  | **~value_ptr**() |&nbsp; |
+| Assignment     |&ndash; |&ndash; | C++11  | value_ptr & **operator=**( std::nullptr_t ) noexcept |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | value_ptr & **operator=**( T const & value ) |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | C++11  | template< class U, ... ><br>value_ptr & **operator=**( U && value ) |&nbsp; |
+| &nbsp;         |&ndash; |&#10003;| &nbsp; | value_ptr & **operator=**( value_ptr const & rhs ) |&nbsp; |
+| &nbsp;         |&ndash; |&#10003;| C++11  | value_ptr & **operator=**( value_ptr && rhs ) noexcept |&nbsp; |
+| Emplace        |&ndash; |&ndash; | C++11  | template< class... Args ><br>void **emplace**( Args&&... args ) |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | C++11  | template< class U, class... Args ><br>void **emplace**( std::initializer_list&lt;U> il, Args&&... args ) |&nbsp; |
+| Observers      |&#10003;|&#10003;| &nbsp; | pointer **get**() noexcept |&nbsp; |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | cloner_type & **get_cloner**() noexcept |[2]: get_copier() |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | deleter_type & **get_deleter**() noexcept |&nbsp; |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | reference **operator\***() const |&nbsp; |
+| &nbsp;         |&#10003;|&#10003;| &nbsp; | pointer **operator->**() const noexcept |&nbsp; |
+| &nbsp;         |&#10003;|&#10003;| C++11  | explicit operator **bool**() const noexcept |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; |<C++11  | operator **safe_bool**() const noexcept |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | bool **has_value**() const nsvp_noexcept |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | element_type const & **value**() const |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | element_type & **value**() |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | C++11  | template< class U ><br>constexpr element_type **value_or**( U && v ) const |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; |<C++11  | template< class U ><br>constexpr element_type **value_or**( U const & v ) const |&nbsp; |
+| Modifiers      |&#10003;|&#10003;| &nbsp; | pointer **release**() noexcept |&nbsp; |
+| &nbsp;         |&ndash; |&ndash; | &nbsp; | void **reset**( pointer p = pointer() ) noexcept |&nbsp; |
+| &nbsp;         |&ndash; |&#10003;| &nbsp; | void **swap**( value_ptr & other ) noexcept |&nbsp; |
 
 **Notes:**<br>
 1. [2] has various converting constructors.
@@ -170,17 +170,17 @@ Synopsis
 
 | Kind                 |[[1]](#ref1)| [[2]](#ref2)| std  | Function |
 |--------------------------|:------:|:------:|:----:|----------|
-| Relational operators     |&ndash; |&#10003;|&nbsp;| template< ... ><br>bool operator _op_( value_ptr<...> const & lhs, value_ptr<...> const & rhs ) |
-| &nbsp;                   |&ndash; |&#10003;|C++11 | template< ... ><br>bool operator _op_( value_ptr<...> const & lhs, std::nullptr_t ) |
-| &nbsp;                   |&ndash; |&#10003;|C++11 | template< ... ><br>bool operator _op_( std::nullptr_t, value_ptr<...> const & rhs ) |
-| &nbsp;                   |&ndash; |&ndash; |&nbsp;| template< ... ><br>bool operator _op_( value_ptr<...> const & lhs, T const & value ) |
-| &nbsp;                   |&ndash; |&ndash; |&nbsp;| template< ... ><br>bool operator _op_( T const & value, value_ptr<...> const & rhs ) |
-| Swap                     |&ndash; |&#10003;|&nbsp;| template< class T, class C, class D ><br>void swap( value_ptr&lt;T,C,D> & x, value_ptr&lt;T,C,D> & y ) noexcept(...) |
-| Create                   |&ndash; |&ndash; |<C++11| template< class T, class C, class D ><br>value_ptr&lt;T,C,D> make_value( T const & v )      |
-| &nbsp;                   |&ndash; |&ndash; | C++11| template< class T ><br>value_ptr< typename std::decay&lt;T>::type > make_value( T && v ) |
-| &nbsp;                   |&ndash; |&ndash; | C++11| template< class T, class...Args ><br>value_ptr&lt;T,C,D> make_value( Args&&... args ) |
-| &nbsp;                   |&ndash; |&ndash; | C++11| template< class T, class U, class... Args ><br>value_ptr&lt;T,C,D> make_value( std::initializer_list&lt;U> il, Args&&... args ) |
-| Hash                     |&ndash; |&#10003;| C++11| template< class T ><br>class hash< nonstd::value_ptr&lt;T,C,D> > |
+| Relational operators     |&ndash; |&#10003;|&nbsp;| template< ... ><br>bool operator **_op_**( value_ptr<...> const & lhs, value_ptr<...> const & rhs ) |
+| &nbsp;                   |&ndash; |&#10003;|C++11 | template< ... ><br>bool operator **_op_**( value_ptr<...> const & lhs, std::nullptr_t ) |
+| &nbsp;                   |&ndash; |&#10003;|C++11 | template< ... ><br>bool operator **_op_**( std::nullptr_t, value_ptr<...> const & rhs ) |
+| &nbsp;                   |&ndash; |&ndash; |&nbsp;| template< ... ><br>bool operator **_op_**( value_ptr<...> const & lhs, T const & value ) |
+| &nbsp;                   |&ndash; |&ndash; |&nbsp;| template< ... ><br>bool operator **_op_**( T const & value, value_ptr<...> const & rhs ) |
+| Swap                     |&ndash; |&#10003;|&nbsp;| template< class T, class C, class D ><br>void **swap**( value_ptr&lt;T,C,D> & x, value_ptr&lt;T,C,D> & y ) noexcept(...) |
+| Create                   |&ndash; |&ndash; |<C++11| template< class T, class C, class D ><br>value_ptr&lt;T,C,D> **make_value**( T const & v )      |
+| &nbsp;                   |&ndash; |&ndash; | C++11| template< class T ><br>value_ptr< typename std::decay&lt;T>::type > **make_value**( T && v ) |
+| &nbsp;                   |&ndash; |&ndash; | C++11| template< class T, class...Args ><br>value_ptr&lt;T,C,D> **make_value**( Args&&... args ) |
+| &nbsp;                   |&ndash; |&ndash; | C++11| template< class T, class U, class... Args ><br>value_ptr&lt;T,C,D> **make_value**( std::initializer_list&lt;U> il, Args&&... args ) |
+| Hash                     |&ndash; |&#10003;| C++11| template< class T ><br>class **hash**< nonstd::value_ptr&lt;T,C,D> > |
 
 
 ### Configuration macros
