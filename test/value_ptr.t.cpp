@@ -11,7 +11,7 @@
 // template < class U > /* EXPLICIT */ optional( const optional<U>& other );
 // template < class U > /* EXPLICIT */ optional( optional<U>&& other );
 
-#include "value-ptr-lite.t.hpp"
+#include "value_ptr-main.t.hpp"
 
 namespace {
 
