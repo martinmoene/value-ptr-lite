@@ -10,9 +10,15 @@ cmake_minimum_required( VERSION 3.0 )
 project( examples )
 
 set( TARGETS
-    01-pimpl
     02-tree
 )
+
+if( NOT MSVC OR NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.00 )
+    set( TARGETS 
+        01-pimpl 
+        ${TARGETS} 
+)
+endif()
 
 set( HDRDIR ${PROJECT_SOURCE_DIR}/../include/nonstd )
 
@@ -22,7 +28,7 @@ endforeach()
 
 # set compiler options:
 
-if( CMAKE_CXX_COMPILER_ID MATCHES MSVC )
+if( MSVC )
     foreach( target ${TARGETS} )
         target_compile_options( ${target} PUBLIC -W3 -EHsc )
     endforeach()
