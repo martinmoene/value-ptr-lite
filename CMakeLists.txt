@@ -12,7 +12,7 @@ cmake_minimum_required( VERSION 3.0 )
 option( VALUE_PTR_LITE_BUILD_TEST    "Build and perform value_ptr-lite tests" ON )
 option( VALUE_PTR_LITE_BUILD_EXAMPLE "Build value_ptr-lite examples" ON )
 
-project( value_ptr_lite )
+project( value_ptr_lite LANGUAGES CXX )
 
 set( package_name "value_ptr-lite" )
 set( include_source_dir "${PROJECT_SOURCE_DIR}/include" )

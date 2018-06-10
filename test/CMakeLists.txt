@@ -8,7 +8,7 @@
 
 cmake_minimum_required( VERSION 3.0 )
 
-project( test )
+project( test LANGUAGES CXX )
 
 option( VALUE_PTR_LITE_COLOURISE_TEST "Colourise test output" OFF )
 

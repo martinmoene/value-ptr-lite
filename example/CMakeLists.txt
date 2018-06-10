@@ -7,7 +7,7 @@
 
 cmake_minimum_required( VERSION 3.0 )
 
-project( examples )
+project( example LANGUAGES CXX )
 
 set( TARGETS
     02-tree
