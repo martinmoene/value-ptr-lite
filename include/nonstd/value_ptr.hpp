@@ -17,7 +17,14 @@
 #include <stdexcept>
 #include <utility>
 
-#define  value_ptr_lite_VERSION "0.0.0"
+#define value_ptr_lite_MAJOR  0
+#define value_ptr_lite_MINOR  0
+#define value_ptr_lite_PATCH  0
+
+#define value_ptr_lite_VERSION  nsvp_STRINGIFY(value_ptr_lite_MAJOR) "." nsvp_STRINGIFY(value_ptr_lite_MINOR) "." nsvp_STRINGIFY(value_ptr_lite_PATCH)
+
+#define nsvp_STRINGIFY(  x )  nsvp_STRINGIFY_( x )
+#define nsvp_STRINGIFY_( x )  #x
 
 // value-ptr-lite configuration:
 

@@ -7,6 +7,10 @@
 
 cmake_minimum_required( VERSION 3.5 )
 
+# value_ptr-lite version, updated by script/update-version.py:
+
+set( value_ptr_lite_version "0.0.0" )
+
 # At default, enable building and performing of tests and building of examples:
 
 option( VALUE_PTR_LITE_BUILD_TEST    "Build and perform value_ptr-lite tests" ON )

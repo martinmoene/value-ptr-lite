@@ -21,6 +21,9 @@ lest::tests & specification()
 
 CASE( "value-ptr-lite version" "[.version]" )
 {
+    nsvp_PRESENT( value_ptr_lite_MAJOR );
+    nsvp_PRESENT( value_ptr_lite_MINOR );
+    nsvp_PRESENT( value_ptr_lite_PATCH );
     nsvp_PRESENT( value_ptr_lite_VERSION );
 }
 
