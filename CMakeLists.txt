@@ -18,6 +18,8 @@ option( VALUE_PTR_LITE_BUILD_EXAMPLE "Build value_ptr-lite examples" ON )
 
 project( value_ptr_lite LANGUAGES CXX )
 
+include( GNUInstallDirs )
+
 set( package_name "value_ptr-lite" )
 set( include_source_dir "${PROJECT_SOURCE_DIR}/include" )
 
@@ -28,6 +30,13 @@ add_library(
     
 target_include_directories( 
     ${package_name} INTERFACE "$<BUILD_INTERFACE:${include_source_dir}>" )
+
+# Installation:
+
+install( 
+    DIRECTORY ${CMAKE_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} )
+
+# If requested, build and perform tests, build examples:
 
 enable_testing()
 
