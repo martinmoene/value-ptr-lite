@@ -208,7 +208,7 @@
 #endif
 
 //
-// in_place: code duplicated in any-lite, optional-lite, variant-lite, value-ptr-lite:
+// in_place: code duplicated in any-lite, expected-lite, optional-lite, variant-lite:
 //
 
 #if   ! nonstd_lite_HAVE_IN_PLACE_TYPES
