@@ -568,7 +568,7 @@ CASE( "value_ptr: Allows to construct and destroy via user-specified cloner and 
 
 namespace cloner {
 
-struct Cloner : detail::default_clone<int>
+struct Cloner : vptr::detail::default_clone<int>
 {
     Cloner() : data(-1) {}
     int data;

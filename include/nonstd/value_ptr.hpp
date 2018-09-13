@@ -11,12 +11,6 @@
 #ifndef NONSTD_VALUE_PTR_LITE_HPP
 #define NONSTD_VALUE_PTR_LITE_HPP
 
-#include <cassert>
-#include <functional>
-#include <memory>
-#include <stdexcept>
-#include <utility>
-
 #define value_ptr_lite_MAJOR  0
 #define value_ptr_lite_MINOR  0
 #define value_ptr_lite_PATCH  0
@@ -207,15 +201,45 @@
     do { typedef int x[(expr) ? 1 : -1]; } while(0)
 #endif
 
+#include <cassert>
+#include <functional>
+#include <memory>
+#include <stdexcept>
+#include <utility>
+
 //
 // in_place: code duplicated in any-lite, expected-lite, optional-lite, variant-lite:
 //
 
-#if   ! nonstd_lite_HAVE_IN_PLACE_TYPES
+#ifndef nonstd_lite_HAVE_IN_PLACE_TYPES
 #define nonstd_lite_HAVE_IN_PLACE_TYPES  1
+
+// C++17 std::in_place in <utility>:
+
+#if nsvp_CPP17_OR_GREATER
 
 namespace nonstd {
 
+using std::in_place;
+using std::in_place_type;
+using std::in_place_index;
+using std::in_place_t;
+using std::in_place_type_t;
+using std::in_place_index_t;
+
+#define nonstd_lite_in_place_t(      T)  std::in_place_t
+#define nonstd_lite_in_place_type_t( T)  std::in_place_type_t<T>
+#define nonstd_lite_in_place_index_t(T)  std::in_place_index_t<I>
+
+#define nonstd_lite_in_place(      T)    std::in_place_t{}
+#define nonstd_lite_in_place_type( T)    std::in_place_type_t<T>{}
+#define nonstd_lite_in_place_index(T)    std::in_place_index_t<I>{}
+
+} // namespace nonstd
+
+#else // nsvp_CPP11_OR_GREATER
+
+namespace nonstd {
 namespace detail {
 
 template< class T >
@@ -240,16 +264,38 @@ inline in_place_t in_place( detail::in_place_index_tag<I> = detail::in_place_ind
     return in_place_t();
 }
 
+template< class T >
+inline in_place_t in_place_type( detail::in_place_type_tag<T> = detail::in_place_type_tag<T>() )
+{
+    return in_place_t();
+}
+
+template< std::size_t I >
+inline in_place_t in_place_index( detail::in_place_index_tag<I> = detail::in_place_index_tag<I>() )
+{
+    return in_place_t();
+}
+
 // mimic templated typedef:
 
+#define nonstd_lite_in_place_t(      T)  nonstd::in_place_t(&)( nonstd::detail::in_place_type_tag<T>  )
 #define nonstd_lite_in_place_type_t( T)  nonstd::in_place_t(&)( nonstd::detail::in_place_type_tag<T>  )
 #define nonstd_lite_in_place_index_t(T)  nonstd::in_place_t(&)( nonstd::detail::in_place_index_tag<I> )
 
+#define nonstd_lite_in_place(      T)    nonstd::in_place_type<T>
+#define nonstd_lite_in_place_type( T)    nonstd::in_place_type<T>
+#define nonstd_lite_in_place_index(T)    nonstd::in_place_index<I>
+
 } // namespace nonstd
 
+#endif // nsvp_CPP11_OR_GREATER
 #endif // nonstd_lite_HAVE_IN_PLACE_TYPES
 
-namespace nonstd {
+//
+// value_ptr:
+//
+
+namespace nonstd { namespace vptr {
 
 namespace detail {
 
@@ -297,13 +343,13 @@ struct default_clone
     }
 
     template< class... Args >
-    T * operator()( nonstd_lite_in_place_type_t(T), Args&&... args ) const
+    T * operator()( nonstd_lite_in_place_t(T), Args&&... args ) const
     {
         return new T( std::forward<Args>(args)...);
     }
 
     template< class U, class... Args >
-    T * operator()( nonstd_lite_in_place_type_t(T), std::initializer_list<U> il, Args&&... args ) const
+    T * operator()( nonstd_lite_in_place_t(T), std::initializer_list<U> il, Args&&... args ) const
     {
         return new T( il, std::forward<Args>(args)...);
     }
@@ -361,13 +407,13 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
     {}
 
     template< class... Args >
-    explicit compressed_ptr( nonstd_lite_in_place_type_t(T), Args&&... args )
-    : ptr( cloner_type()( in_place, std::forward<Args>(args)...) )
+    explicit compressed_ptr( nonstd_lite_in_place_t(T), Args&&... args )
+    : ptr( cloner_type()( nonstd_lite_in_place(T), std::forward<Args>(args)...) )
     {}
 
     template< class U, class... Args >
-    explicit compressed_ptr( nonstd_lite_in_place_type_t(T), std::initializer_list<U> il, Args&&... args )
-    : ptr( cloner_type()( in_place, il, std::forward<Args>(args)...) )
+    explicit compressed_ptr( nonstd_lite_in_place_t(T), std::initializer_list<U> il, Args&&... args )
+    : ptr( cloner_type()( nonstd_lite_in_place(T), il, std::forward<Args>(args)...) )
     {}
 
 #endif
@@ -564,13 +610,13 @@ public:
     {}
 
     template< class... Args >
-    explicit value_ptr( nonstd_lite_in_place_type_t(T), Args&&... args )
-    : ptr( in_place, std::forward<Args>(args)...)
+    explicit value_ptr( nonstd_lite_in_place_t(T), Args&&... args )
+    : ptr( nonstd_lite_in_place(T), std::forward<Args>(args)...)
     {}
 
     template< class U, class... Args >
-    explicit value_ptr( nonstd_lite_in_place_type_t(T), std::initializer_list<U> il, Args&&... args )
-    : ptr( in_place, il, std::forward<Args>(args)...)
+    explicit value_ptr( nonstd_lite_in_place_t(T), std::initializer_list<U> il, Args&&... args )
+    : ptr( nonstd_lite_in_place(T), il, std::forward<Args>(args)...)
     {}
 
 #endif // nsvp_CPP11_OR_GREATER
@@ -1142,6 +1188,10 @@ inline void swap(
 {
     lhs.swap( rhs );
 }
+
+} // namespace vptr
+
+using namespace vptr;
 
 } // namespace nonstd
 
