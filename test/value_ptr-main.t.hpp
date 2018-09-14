@@ -19,7 +19,7 @@ using namespace nonstd;
 
 extern lest::tests & specification();
 
-namespace nonstd {
+namespace nonstd { namespace vptr {
 
 // use oparator<< instead of to_string() overload;
 // see  http://stackoverflow.com/a/10651752/437272
@@ -30,11 +30,11 @@ inline std::ostream & operator<<( std::ostream & os, ::nonstd::value_ptr<T, Clon
     os << "[value_ptr: "; if (vp) os << *vp; else os << "[empty]"; return os << "]";
 }
 
-}
+}}
 
 namespace lest {
 
-using ::nonstd::operator<<;
+using ::nonstd::vptr::operator<<;
 
 } // namespace lest
 
