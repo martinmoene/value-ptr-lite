@@ -234,8 +234,8 @@ Here we use `value-ptr-lite/build`.
         value-ptr-lite/build> cmake -G "Unix Makefiles" [see 3. below] ..
 
 3. Optional. You can control above configuration through the following options:
-   - `-DVALUE_PTR_LITE_BUILD_TEST=ON`: build the tests for lest, default on
-   - `-DVALUE_PTR_LITE_BUILD_EXAMPLE=ON`: build the examples, default on
+   - `-DVALUE_PTR_LITE_BUILD_TEST=ON`: build the tests for lest, default off
+   - `-DVALUE_PTR_LITE_BUILD_EXAMPLE=ON`: build the examples, default off
    - `-DVALUE_PTR_LITE_COLOURISE_TEST=ON`: use colour for pass, fail, default off
 
 4. Build the test suite. With Visual Studio, append the configuration as `--config Debug` or `--config Release`.
