@@ -12,7 +12,7 @@
 #define NONSTD_VALUE_PTR_LITE_HPP
 
 #define value_ptr_lite_MAJOR  0
-#define value_ptr_lite_MINOR  0
+#define value_ptr_lite_MINOR  1
 #define value_ptr_lite_PATCH  0
 
 #define value_ptr_lite_VERSION  nsvp_STRINGIFY(value_ptr_lite_MAJOR) "." nsvp_STRINGIFY(value_ptr_lite_MINOR) "." nsvp_STRINGIFY(value_ptr_lite_PATCH)
