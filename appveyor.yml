@@ -36,7 +36,7 @@ matrix:
 
 before_build:
     - mkdir build && cd build
-    - cmake -A %platform% -G "%generator%" ..
+    - cmake -A %platform% -G "%generator%" -DVALUE_PTR_LITE_BUILD_TEST=ON -DVALUE_PTR_LITE_BUILD_EXAMPLE=ON ..
 
 build_script:
     - cmake --build . --config %configuration%
