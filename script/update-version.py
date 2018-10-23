@@ -31,6 +31,10 @@ table = (
 #        , r'\value_ptr_lite_version\s+=\s+"([0-9]+\.[0-9]+\.[0-9]+)"\s*$'
 #        , 'value_ptr_lite_version = "{major}.{minor}.{patch}"\n' )
 
+    , ( 'conanfile.py'
+        , r'version\s+=\s+"([0-9]+\.[0-9]+\.[0-9]+)"\s*$'
+        , 'version = "{major}.{minor}.{patch}"' )
+
     , ( 'include/nonstd/value_ptr.hpp'
         , r'\#define\s+value_ptr_lite_MAJOR\s+[0-9]+\s*$'
         , '#define value_ptr_lite_MAJOR  {major}' )
