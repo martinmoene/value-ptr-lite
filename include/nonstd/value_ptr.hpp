@@ -223,7 +223,7 @@
 #include <utility>
 
 //
-// in_place: code duplicated in any-lite, expected-lite, optional-lite, variant-lite:
+// in_place: code duplicated in any-lite, expected-lite, optional-lite, value-ptr-lite, variant-lite:
 //
 
 #ifndef nonstd_lite_HAVE_IN_PLACE_TYPES
@@ -232,6 +232,8 @@
 // C++17 std::in_place in <utility>:
 
 #if nsvp_CPP17_OR_GREATER
+
+#include <utility>
 
 namespace nonstd {
 
@@ -252,7 +254,9 @@ using std::in_place_index_t;
 
 } // namespace nonstd
 
-#else // nsvp_CPP11_OR_GREATER
+#else // nsvp_CPP17_OR_GREATER
+
+#include <cstddef>
 
 namespace nonstd {
 namespace detail {
@@ -303,7 +307,7 @@ inline in_place_t in_place_index( detail::in_place_index_tag<K> = detail::in_pla
 
 } // namespace nonstd
 
-#endif // nsvp_CPP11_OR_GREATER
+#endif // nsvp_CPP17_OR_GREATER
 #endif // nonstd_lite_HAVE_IN_PLACE_TYPES
 
 //
