@@ -370,6 +370,7 @@ CASE( "value_ptr: Allows to copy-assign from/to engaged and disengaged value_ptr
 
 CASE( "value_ptr: Allows to move-assign from/to engaged and disengaged value_ptr-s (C++11)" )
 {
+#if nsvp_CPP11_OR_GREATER
     SETUP( "" )
     {
         value_ptr<int> d1;
@@ -400,6 +401,9 @@ CASE( "value_ptr: Allows to move-assign from/to engaged and disengaged value_ptr
         EXPECT( !d1 );
 //      EXPECT(  d1.get() == d2.get() );
     }}
+#else
+    EXPECT( !!"value_ptr: move-construction is not available (no C++11)" );
+#endif
 }
 
 CASE( "value_ptr: Allows to copy-assign from literal value" )

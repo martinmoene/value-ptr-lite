@@ -761,7 +761,7 @@ public:
         if ( this == &rhs )
             return *this;
 
-        ptr.reset( std::move( rhs.ptr ) );
+        swap( rhs );
 
         return *this;
     }
