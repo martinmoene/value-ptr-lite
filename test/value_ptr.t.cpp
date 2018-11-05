@@ -402,7 +402,7 @@ CASE( "value_ptr: Allows to move-assign from/to engaged and disengaged value_ptr
 //      EXPECT(  d1.get() == d2.get() );
     }}
 #else
-    EXPECT( !!"value_ptr: move-construction is not available (no C++11)" );
+    EXPECT( !!"value_ptr: move-assignment is not available (no C++11)" );
 #endif
 }
 
