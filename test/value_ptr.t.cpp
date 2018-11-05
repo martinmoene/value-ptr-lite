@@ -370,6 +370,36 @@ CASE( "value_ptr: Allows to copy-assign from/to engaged and disengaged value_ptr
 
 CASE( "value_ptr: Allows to move-assign from/to engaged and disengaged value_ptr-s (C++11)" )
 {
+    SETUP( "" )
+    {
+        value_ptr<int> d1;
+        value_ptr<int> d2;
+        value_ptr<int> e1( 123 );
+        value_ptr<int> e2( 987 );
+
+    SECTION( "a disengaged value_ptr assigned an engaged value_ptr obtains its value" )
+    {
+        d1 = std::move( e1 );
+
+        EXPECT(  d1 );
+        EXPECT( *d1 == 123 );
+//      EXPECT(  d1.get() != e1.get() );
+    }
+    SECTION( "an engaged value_ptr assigned an engaged value_ptr obtains its value" )
+    {
+        e1 = std::move( e2 );
+
+        EXPECT(  e1 );
+        EXPECT( *e1 == 987 );
+//      EXPECT(  e1.get() != e2.get() );
+    }
+    SECTION( "a disengaged value_ptr assigned a disengaged value_ptr remains empty" )
+    {
+        d1 = std::move( d2 );
+
+        EXPECT( !d1 );
+//      EXPECT(  d1.get() == d2.get() );
+    }}
 }
 
 CASE( "value_ptr: Allows to copy-assign from literal value" )
