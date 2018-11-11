@@ -26,11 +26,23 @@
 # define nsvp_CONFIG_COMPARE_POINTERS  0
 #endif
 
-// Compiler detection (C++17 is speculative):
+// C++ language version detection (C++20 is speculative):
+// Note: VC14.0/1900 (VS2015) lacks too much from C++14.
 
-#define nsvp_CPP11_OR_GREATER  ( __cplusplus >= 201103L )
-#define nsvp_CPP14_OR_GREATER  ( __cplusplus >= 201402L )
-#define nsvp_CPP17_OR_GREATER  ( __cplusplus >= 201700L )
+#ifndef   nsvp_CPLUSPLUS
+# if defined(_MSVC_LANG ) && !defined(__clang__)
+#  define nsvp_CPLUSPLUS  (_MSC_VER == 1900 ? 201103L : _MSVC_LANG )
+# else
+#  define nsvp_CPLUSPLUS  __cplusplus
+# endif
+#endif
+
+#define nsvp_CPP98_OR_GREATER  ( nsvp_CPLUSPLUS >= 199711L )
+#define nsvp_CPP11_OR_GREATER  ( nsvp_CPLUSPLUS >= 201103L )
+#define nsvp_CPP11_OR_GREATER_ ( nsvp_CPLUSPLUS >= 201103L )
+#define nsvp_CPP14_OR_GREATER  ( nsvp_CPLUSPLUS >= 201402L )
+#define nsvp_CPP17_OR_GREATER  ( nsvp_CPLUSPLUS >= 201703L )
+#define nsvp_CPP20_OR_GREATER  ( nsvp_CPLUSPLUS >= 202000L )
 
 // half-open range [lo..hi):
 #define nsvp_BETWEEN( v, lo, hi ) ( (lo) <= (v) && (v) < (hi) )
