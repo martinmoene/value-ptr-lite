@@ -33,7 +33,7 @@
 #define nsvp_CPP17_OR_GREATER  ( __cplusplus >= 201700L )
 
 // half-open range [lo..hi):
-#define nsvp_BETWEEN( v, lo, hi ) ( lo <= v && v < hi )
+#define nsvp_BETWEEN( v, lo, hi ) ( (lo) <= (v) && (v) < (hi) )
 
 #if defined(__clang__)
 # define nsvp_COMPILER_CLANG_VERSION  __clang__
