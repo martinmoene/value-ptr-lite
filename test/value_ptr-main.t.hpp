@@ -11,13 +11,21 @@
 #define value_ptr_lite_T_INCLUDED
 
 #include "value_ptr.hpp"
-#include "lest_cpp03.hpp"
 
-using namespace nonstd;
+// Compiler warning suppression for usage of lest:
 
-#define CASE( name ) lest_CASE( specification(), name )
+#ifdef __clang__
+# pragma clang diagnostic ignored "-Wstring-conversion"
+# pragma clang diagnostic ignored "-Wunused-parameter"
+# pragma clang diagnostic ignored "-Wunused-template"
+# pragma clang diagnostic ignored "-Wunused-function"
+# pragma clang diagnostic ignored "-Wunused-member-function"
+#elif defined __GNUC__
+# pragma GCC   diagnostic ignored "-Wunused-parameter"
+# pragma GCC   diagnostic ignored "-Wunused-function"
+#endif
 
-extern lest::tests & specification();
+#include <iostream>
 
 namespace nonstd { namespace vptr {
 
@@ -37,6 +45,12 @@ namespace lest {
 using ::nonstd::vptr::operator<<;
 
 } // namespace lest
+
+#include "lest_cpp03.hpp"
+
+extern lest::tests & specification();
+
+#define CASE( name ) lest_CASE( specification(), name )
 
 #endif // value_ptr_lite_T_INCLUDED
 

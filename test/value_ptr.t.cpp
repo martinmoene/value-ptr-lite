@@ -13,6 +13,8 @@
 
 #include "value_ptr-main.t.hpp"
 
+using namespace nonstd;
+
 namespace {
 
 // The following tracer code originates as Oracle from Optional by
@@ -85,7 +87,7 @@ inline std::ostream & operator<<( std::ostream & os, S const & s )
 struct NoDefaultCopyMove
 {
     std::string text;
-    NoDefaultCopyMove( std::string text ) : text( text ) {}
+    NoDefaultCopyMove( std::string txt ) : text( txt ) {}
 
 private:
     NoDefaultCopyMove();
@@ -104,11 +106,11 @@ struct InitList
     char c;
     S s;
 
-    InitList( std::initializer_list<int> il, char c, S const & s )
-    : vec( il ), c( c ), s( s ) {}
+    InitList( std::initializer_list<int> il, char k, S const & t )
+    : vec( il ), c( k ), s( t ) {}
 
-    InitList( std::initializer_list<int> il, char c, S && s )
-    : vec( il ), c( c ), s( std::move( s ) ) {}
+    InitList( std::initializer_list<int> il, char k, S && t )
+    : vec( il ), c( k ), s( std::move( t ) ) {}
 };
 #endif
 
@@ -564,9 +566,9 @@ CASE( "value_ptr: Allows to construct and destroy via user-specified cloner and 
 
     SECTION( "constructed from pointer" )
     {{
-        Value_ptr a( Spy::create( Movable(42) ) );
+        Value_ptr b( Spy::create( Movable(42) ) );
 
-        EXPECT( *a == Movable(42) );
+        EXPECT( *b == Movable(42) );
         EXPECT(  1 == Spy::constructions() );
         EXPECT(  0 == Spy::destructions()  );
         EXPECT(  0 == Spy::clones()        );
@@ -642,7 +644,7 @@ CASE( "value_ptr: Allows to construct via user-specified cloner with member data
 
 // observers:
 
-struct Integer { int x; Integer(int x) : x(x) {} };
+struct Integer { int x; Integer(int v) : x(v) {} };
 
 CASE( "value_ptr: Allows to obtain pointer to value via operator->()" )
 {
