@@ -47,17 +47,18 @@
 // half-open range [lo..hi):
 #define nsvp_BETWEEN( v, lo, hi ) ( (lo) <= (v) && (v) < (hi) )
 
-#if defined(__clang__)
-# define nsvp_COMPILER_CLANG_VERSION  __clang__
-#else
-# define nsvp_COMPILER_CLANG_VERSION  0
-#endif
-
-#if defined(__GNUC__) && ! defined(__clang__)
-# define nsvp_COMPILER_GNUC_VERSION  __GNUC__
-#else
-# define nsvp_COMPILER_GNUC_VERSION  0
-#endif
+// Compiler versions:
+//
+// MSVC++ 6.0  _MSC_VER == 1200 (Visual Studio 6.0)
+// MSVC++ 7.0  _MSC_VER == 1300 (Visual Studio .NET 2002)
+// MSVC++ 7.1  _MSC_VER == 1310 (Visual Studio .NET 2003)
+// MSVC++ 8.0  _MSC_VER == 1400 (Visual Studio 2005)
+// MSVC++ 9.0  _MSC_VER == 1500 (Visual Studio 2008)
+// MSVC++ 10.0 _MSC_VER == 1600 (Visual Studio 2010)
+// MSVC++ 11.0 _MSC_VER == 1700 (Visual Studio 2012)
+// MSVC++ 12.0 _MSC_VER == 1800 (Visual Studio 2013)
+// MSVC++ 14.0 _MSC_VER == 1900 (Visual Studio 2015)
+// MSVC++ 14.1 _MSC_VER >= 1910 (Visual Studio 2017)
 
 #if defined(_MSC_VER ) && !defined(__clang__)
 # define nsvp_COMPILER_MSVC_VER      (_MSC_VER )
@@ -67,12 +68,55 @@
 # define nsvp_COMPILER_MSVC_VERSION  0
 #endif
 
-#if nsvp_BETWEEN(nsvp_COMPILER_MSVC_VERSION, 70, 140 )
+#define nsvp_COMPILER_VERSION( major, minor, patch )  ( 10 * ( 10 * (major) + (minor) ) + (patch) )
+
+#if defined(__clang__)
+# define nsvp_COMPILER_CLANG_VERSION  nsvp_COMPILER_VERSION(__clang_major__, __clang_minor__, __clang_patchlevel__)
+#else
+# define nsvp_COMPILER_CLANG_VERSION  0
+#endif
+
+#if defined(__GNUC__) && !defined(__clang__)
+# define nsvp_COMPILER_GNUC_VERSION  nsvp_COMPILER_VERSION(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__)
+#else
+# define nsvp_COMPILER_GNUC_VERSION  0
+#endif
+
+#if nsvp_BETWEEN( nsvp_COMPILER_MSVC_VER, 1300, 1900 )
 # pragma warning( push )
 # pragma warning( disable: 4345 )   // initialization behavior changed
 #endif
 
-#if nsvp_COMPILER_MSVC_VERSION >= 140
+// Presence of language and library features:
+
+#define nsvp_HAVE( feature )  ( nsvp_HAVE_##feature )
+
+#ifdef _HAS_CPP0X
+# define nsvp_HAS_CPP0X  _HAS_CPP0X
+#else
+# define nsvp_HAS_CPP0X  0
+#endif
+
+// Unless defined otherwise below, consider VC14 as C++11 for value_ptr-lite:
+
+#if nsvp_COMPILER_MSVC_VER >= 1900
+# undef  nsvp_CPP11_OR_GREATER
+# define nsvp_CPP11_OR_GREATER  1
+#endif
+
+#define nsvp_CPP11_90   (nsvp_CPP11_OR_GREATER_ || nsvp_COMPILER_MSVC_VER >= 1500)
+#define nsvp_CPP11_100  (nsvp_CPP11_OR_GREATER_ || nsvp_COMPILER_MSVC_VER >= 1600)
+#define nsvp_CPP11_110  (nsvp_CPP11_OR_GREATER_ || nsvp_COMPILER_MSVC_VER >= 1700)
+#define nsvp_CPP11_120  (nsvp_CPP11_OR_GREATER_ || nsvp_COMPILER_MSVC_VER >= 1800)
+#define nsvp_CPP11_140  (nsvp_CPP11_OR_GREATER_ || nsvp_COMPILER_MSVC_VER >= 1900)
+#define nsvp_CPP11_141  (nsvp_CPP11_OR_GREATER_ || nsvp_COMPILER_MSVC_VER >= 1910)
+
+#define nsvp_CPP14_000  (nsvp_CPP14_OR_GREATER)
+#define nsvp_CPP17_000  (nsvp_CPP17_OR_GREATER)
+
+// empty bases:
+
+#if nsvp_COMPILER_MSVC_VER >= 1900
 # define nsvp_DECLSPEC_EMPTY_BASES  __declspec(empty_bases)
 #else
 # define nsvp_DECLSPEC_EMPTY_BASES
@@ -80,78 +124,27 @@
 
 // Presence of C++11 language features:
 
-#if nsvp_CPP11_OR_GREATER || nsvp_COMPILER_MSVC_VERSION >= 100
-# define nsvp_HAVE_AUTO  1
-# define nsvp_HAVE_NULLPTR  1
-# define nsvp_HAVE_STATIC_ASSERT  1
-#endif
-
-#if nsvp_CPP11_OR_GREATER || nsvp_COMPILER_MSVC_VERSION >= 120
-# define nsvp_HAVE_DEFAULT_FUNCTION_TEMPLATE_ARG  1
-# define nsvp_HAVE_INITIALIZER_LIST  1
-#endif
-
-#if nsvp_CPP11_OR_GREATER || nsvp_COMPILER_MSVC_VERSION >= 140
-# define nsvp_HAVE_ALIAS_TEMPLATE  1
-# define nsvp_HAVE_CONSTEXPR_11  1
-# define nsvp_HAVE_ENUM_CLASS  1
-# define nsvp_HAVE_EXPLICIT_CONVERSION  1
-# define nsvp_HAVE_IS_DEFAULT  1
-# define nsvp_HAVE_IS_DELETE  1
-# define nsvp_HAVE_NOEXCEPT  1
-# define nsvp_HAVE_REF_QUALIFIER  1
-#endif
+#define nsvp_HAVE_CONSTEXPR_11          nsvp_CPP11_140
+#define nsvp_HAVE_INITIALIZER_LIST      nsvp_CPP11_120
+#define nsvp_HAVE_IS_DEFAULT            nsvp_CPP11_140
+#define nsvp_HAVE_NOEXCEPT              nsvp_CPP11_140
+#define nsvp_HAVE_NULLPTR               nsvp_CPP11_100
+#define nsvp_HAVE_REF_QUALIFIER         nsvp_CPP11_140
 
 // Presence of C++14 language features:
 
-#if nsvp_CPP14_OR_GREATER
-# define nsvp_HAVE_CONSTEXPR_14  1
-#endif
+#define nsvp_HAVE_CONSTEXPR_14          nsvp_CPP14_000
 
 // Presence of C++17 language features:
 
-#if nsvp_CPP17_OR_GREATER
-# define nsvp_HAVE_ENUM_CLASS_CONSTRUCTION_FROM_UNDERLYING_TYPE  1
-#endif
+// no flag
 
 // Presence of C++ library features:
 
-#if nsvp_COMPILER_GNUC_VERSION
-# define nsvp_HAVE_TR1_TYPE_TRAITS  1
-# define nsvp_HAVE_TR1_ADD_POINTER  1
-#endif
+#define nsvp_HAVE_TR1_TYPE_TRAITS       (!! nsvp_COMPILER_GNUC_VERSION )
+#define nsvp_HAVE_TR1_ADD_POINTER       (!! nsvp_COMPILER_GNUC_VERSION )
 
-#if nsvp_CPP11_OR_GREATER || nsvp_COMPILER_MSVC_VERSION >= 90
-# define nsvp_HAVE_TYPE_TRAITS  1
-# define nsvp_HAVE_STD_ADD_POINTER  1
-#endif
-
-#if nsvp_CPP11_OR_GREATER || nsvp_COMPILER_MSVC_VERSION >= 110
-# define nsvp_HAVE_ARRAY  1
-#endif
-
-#if nsvp_CPP11_OR_GREATER || nsvp_COMPILER_MSVC_VERSION >= 120
-# define nsvp_HAVE_CONDITIONAL  1
-#endif
-
-#if nsvp_CPP11_OR_GREATER || nsvp_COMPILER_MSVC_VERSION >= 140 || (nsvp_COMPILER_MSVC_VERSION >= 90 && _HAS_CPP0X)
-# define nsvp_HAVE_CONTAINER_DATA_METHOD  1
-#endif
-
-#if nsvp_CPP11_OR_GREATER || nsvp_COMPILER_MSVC_VERSION >= 120
-# define nsvp_HAVE_REMOVE_CV  1
-#endif
-
-#if nsvp_CPP11_OR_GREATER || nsvp_COMPILER_MSVC_VERSION >= 140
-# define nsvp_HAVE_SIZED_TYPES  1
-#endif
-
-// For the rest, consider VC14 as C++11 for value-ptr-lite:
-
-#if nsvp_COMPILER_MSVC_VERSION >= 140
-# undef  nsvp_CPP11_OR_GREATER
-# define nsvp_CPP11_OR_GREATER  1
-#endif
+#define nsvp_HAVE_TYPE_TRAITS           nsvp_CPP11_90
 
 // C++ feature usage:
 
@@ -1282,5 +1275,9 @@ struct hash< nonstd::value_ptr<T, D, C> >
 } // namespace std
 
 #endif // nsvp_CPP11_OR_GREATER
+
+#if nsvp_BETWEEN( nsvp_COMPILER_MSVC_VER, 1300, 1900 )
+# pragma warning( pop )
+#endif
 
 #endif // NONSTD_VALUE_PTR_LITE_HPP
