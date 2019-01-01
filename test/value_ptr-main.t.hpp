@@ -2,7 +2,7 @@
 //
 // https://github.com/martinmoene/value-ptr-lite
 //
-// Distributed under the Boost Software License, Version 1.0. 
+// Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
@@ -10,7 +10,7 @@
 #ifndef value_ptr_lite_T_INCLUDED
 #define value_ptr_lite_T_INCLUDED
 
-#include "value_ptr.hpp"
+#include "nonstd/value_ptr.hpp"
 
 // Compiler warning suppression for usage of lest:
 
