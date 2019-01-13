@@ -41,5 +41,5 @@ int main()
     assert( root.right->name == "root" );
 }
 
-// cl  -EHsc -I../include/nonstd/ 02-tree.cpp && 02-tree.exe
-// g++ -std=c++11 -I../include/nonstd/ -o 02-tree.exe 02-tree.cpp && 02-tree.exe
+// cl  -EHsc -I../include/ 02-tree.cpp && 02-tree.exe
+// g++ -std=c++11 -I../include/ -o 02-tree.exe 02-tree.cpp && 02-tree.exe
