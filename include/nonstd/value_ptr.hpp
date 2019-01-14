@@ -3,7 +3,7 @@
 //
 // https://github.com/martinmoene/value-ptr-lite
 //
-// Distributed under the Boost Software License, Version 1.0. 
+// Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #pragma once
@@ -24,6 +24,16 @@
 
 #ifndef  nsvp_CONFIG_COMPARE_POINTERS
 # define nsvp_CONFIG_COMPARE_POINTERS  0
+#endif
+
+// Control presence of exception handling (try and auto discover):
+
+#ifndef nsvp_CONFIG_NO_EXCEPTIONS
+# if defined(__cpp_exceptions) || defined(__EXCEPTIONS) || defined(_CPPUNWIND)
+#  define nsvp_CONFIG_NO_EXCEPTIONS  0
+# else
+#  define nsvp_CONFIG_NO_EXCEPTIONS  1
+# endif
 #endif
 
 // C++ language version detection (C++20 is speculative):
@@ -226,8 +236,11 @@
 #include <cassert>
 #include <functional>
 #include <memory>
-#include <stdexcept>
 #include <utility>
+
+#if ! nsvp_CONFIG_NO_EXCEPTIONS
+# include <stdexcept>
+#endif
 
 //
 // in_place: code duplicated in any-lite, expected-lite, optional-lite, value-ptr-lite, variant-lite:
@@ -580,9 +593,10 @@ struct nsvp_DECLSPEC_EMPTY_BASES compressed_ptr : Cloner, Deleter
 
 } // namespace detail
 
-//
+#if ! nsvp_CONFIG_NO_EXCEPTIONS
+
 // value_ptr access error
-//
+
 class bad_value_access : public std::logic_error
 {
 public:
@@ -590,9 +604,10 @@ public:
     : logic_error( "bad value_ptr access" ) {}
 };
 
-//
+#endif
+
 // class value_ptr:
-//
+
 template
 <
     class T
@@ -660,7 +675,7 @@ public:
     : ptr( nonstd_lite_in_place(T), std::forward<Args>(args)...)
     {}
 
-    template< class U, class... Args 
+    template< class U, class... Args
         nsvp_REQUIRES_T(
             std::is_constructible<T, std::initializer_list<U>&, Args&&...>::value
         )
@@ -709,7 +724,7 @@ public:
 
 #if  nsvp_CPP11_OR_GREATER
     template< class V, class C, class D >
-    value_ptr( V && value, C && cloner, D && deleter 
+    value_ptr( V && value, C && cloner, D && deleter
         nsvp_REQUIRES_A(
             !std::is_same<typename std20::remove_cvref<V>::type, nonstd_lite_in_place_t(V)>::value
         )
@@ -838,17 +853,27 @@ public:
 
     element_type const & value() const
     {
+#if nsvp_CONFIG_NO_EXCEPTIONS
+        assert( has_value() );
+#else
         if ( ! has_value() )
+        {
             throw bad_value_access();
-
+        }
+#endif
         return *get();
     }
 
     element_type & value()
     {
+#if nsvp_CONFIG_NO_EXCEPTIONS
+        assert( has_value() );
+#else
         if ( ! has_value() )
+        {
             throw bad_value_access();
-
+        }
+#endif
         return *get();
     }
 

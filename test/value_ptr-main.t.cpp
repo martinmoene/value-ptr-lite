@@ -30,6 +30,7 @@ CASE( "value-ptr-lite version" "[.value-ptr][.version]" )
 CASE( "value-ptr configuration" "[.value-ptr][.config]" )
 {
     nsvp_PRESENT( nsvp_CONFIG_COMPARE_POINTERS );
+    nsvp_PRESENT( nsvp_CONFIG_NO_EXCEPTIONS );
     nsvp_PRESENT( nsvp_CPLUSPLUS );
 }
 
@@ -75,15 +76,15 @@ int main( int argc, char * argv[] )
 }
 
 #if 0
-g++            -I../include -o value-ptr-lite.t.exe value-ptr-lite.t.cpp value_ptr.t.cpp && value-ptr-lite.t.exe --pass
-g++ -std=c++98 -I../include -o value-ptr-lite.t.exe value-ptr-lite.t.cpp value_ptr.t.cpp && value-ptr-lite.t.exe --pass
-g++ -std=c++03 -I../include -o value-ptr-lite.t.exe value-ptr-lite.t.cpp value_ptr.t.cpp && value-ptr-lite.t.exe --pass
-g++ -std=c++0x -I../include -o value-ptr-lite.t.exe value-ptr-lite.t.cpp value_ptr.t.cpp && value-ptr-lite.t.exe --pass
-g++ -std=c++11 -I../include -o value-ptr-lite.t.exe value-ptr-lite.t.cpp value_ptr.t.cpp && value-ptr-lite.t.exe --pass
-g++ -std=c++14 -I../include -o value-ptr-lite.t.exe value-ptr-lite.t.cpp value_ptr.t.cpp && value-ptr-lite.t.exe --pass
-g++ -std=c++17 -I../include -o value-ptr-lite.t.exe value-ptr-lite.t.cpp value_ptr.t.cpp && value-ptr-lite.t.exe --pass
+g++            -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
+g++ -std=c++98 -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
+g++ -std=c++03 -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
+g++ -std=c++0x -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
+g++ -std=c++11 -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
+g++ -std=c++14 -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
+g++ -std=c++17 -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
 
-cl -EHsc -I../include value-ptr-lite.t.cpp value_ptr.t.cpp && value-ptr-lite.t.exe --pass
+cl -EHsc -I../include value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
 #endif
 
 // end of file

@@ -183,8 +183,13 @@ Synopsis
 
 ### Configuration macros
 
+#### Compare pointers
 -D<b>nsvp_CONFIG_COMPARE_POINTERS</b>=0
 Define this to 1 to compare `value_ptr`'s pointer instead of the content it's pointing to. Default is 0.
+
+#### Disable exceptions
+-D<b>nsvp_CONFIG_NO_EXCEPTIONS</b>=0
+Define this to 1 if you want to compile without exceptions. If not defined, the header tries and detect if exceptions have been disabled (e.g. via `-fno-exceptions`). Default is undefined.
 
 
 Reported to work with

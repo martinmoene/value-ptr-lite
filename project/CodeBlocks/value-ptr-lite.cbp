@@ -26,6 +26,7 @@
 		<Unit filename="../../example/01-pimpl-widget.hpp" />
 		<Unit filename="../../example/01-pimpl.cpp" />
 		<Unit filename="../../example/02-tree.cpp" />
+		<Unit filename="../../example/03-no-exceptions.cpp" />
 		<Unit filename="../../example/BUCK" />
 		<Unit filename="../../example/CMakeLists.txt" />
 		<Unit filename="../../include/nonstd/value_ptr.hpp" />
