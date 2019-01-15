@@ -9,7 +9,8 @@ cmake_minimum_required( VERSION 3.5 )
 
 project( example LANGUAGES CXX )
 
-set( PACKAGE ${package_name} )
+set( unit_name "value_ptr" )
+set( PACKAGE   ${unit_name}-lite )
 
 message( STATUS "Subproject '${PROJECT_NAME}'")
 
