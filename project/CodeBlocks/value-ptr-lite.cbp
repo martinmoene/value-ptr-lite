@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Value_ptr Lite" />
+		<Option title="Value Ptr Lite" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="default">
