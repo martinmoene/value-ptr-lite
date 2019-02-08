@@ -31,6 +31,7 @@
 		<Unit filename="../../example/CMakeLists.txt" />
 		<Unit filename="../../include/nonstd/value_ptr.hpp" />
 		<Unit filename="../../script/update-version.py" />
+		<Unit filename="../../script/upload-conan.py" />
 		<Unit filename="../../test/BUCK" />
 		<Unit filename="../../test/CMakeLists.txt" />
 		<Unit filename="../../test/lest_cpp03.hpp" />
