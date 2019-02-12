@@ -6,7 +6,9 @@
 # (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 
-cmake_minimum_required( VERSION 3.5 )
+if( NOT DEFINED CMAKE_MINIMUM_REQUIRED_VERSION )
+    cmake_minimum_required( VERSION 3.5 FATAL_ERROR )
+endif()
 
 project( test LANGUAGES CXX )
 
