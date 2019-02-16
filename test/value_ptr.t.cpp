@@ -367,6 +367,24 @@ CASE( "value_ptr: Allows to copy-assign from/to engaged and disengaged value_ptr
 
         EXPECT( !d1 );
         EXPECT(  d1.get() == d2.get() );
+    }
+    SECTION( "a self-assigned disengaged value_ptr remains empty" )
+    {
+        int * pd1 = d1.get();
+
+        d1 = d1;
+
+        EXPECT( !d1 );
+        EXPECT(  d1.get() == pd1 );
+    }
+    SECTION( "a self-assigned engaged value_ptr remains unchanged" )
+    {
+        int * pe1 = e1.get();
+
+        e1 = e1;
+
+        EXPECT( e1 );
+        EXPECT( e1.get() == pe1 );
     }}
 }
 
@@ -402,6 +420,24 @@ CASE( "value_ptr: Allows to move-assign from/to engaged and disengaged value_ptr
 
         EXPECT( !d1 );
 //      EXPECT(  d1.get() == d2.get() );
+    }
+    SECTION( "a self-assigned disengaged value_ptr remains empty" )
+    {
+        int * pd1 = d1.get();
+
+        d1 = std::move( d1 );
+
+        EXPECT( !d1 );
+        EXPECT(  d1.get() == pd1 );
+    }
+    SECTION( "a self-assigned engaged value_ptr remains unchanged" )
+    {
+        int * pe1 = e1.get();
+
+        e1 = std::move( e1 );
+
+        EXPECT( e1 );
+        EXPECT( e1.get() == pe1 );
     }}
 #else
     EXPECT( !!"value_ptr: move-assignment is not available (no C++11)" );
