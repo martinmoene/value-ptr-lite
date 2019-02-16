@@ -757,7 +757,11 @@ CASE( "value_ptr: Allows to obtain moved-default via value_or() (C++11)" )
 
 CASE( "value_ptr: Throws bad_value_access at disengaged access" )
 {
-    EXPECT_THROWS_AS( value_ptr<int>().value(), bad_value_access );
+    value_ptr<int>       vp;
+    value_ptr<int> const cvp;
+    
+    EXPECT_THROWS_AS(  vp.value(), bad_value_access );
+    EXPECT_THROWS_AS( cvp.value(), bad_value_access );
 }
 
 // modifiers:
