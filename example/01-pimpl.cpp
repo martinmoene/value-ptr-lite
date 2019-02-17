@@ -9,5 +9,5 @@ int main()
 //  assert( w2.next() == 43 );
 }
 
-// cl  -EHsc -I../include/ 01-pimpl.cpp 01-pimpl-widget.cpp && 01-pimpl.exe
-// g++ -std=c++11 -I../include/ -o 01-pimpl.exe 01-pimpl-widget.cpp 01-pimpl.cpp && 01-pimpl.exe
+// cl  -EHsc -I../include 01-pimpl.cpp 01-pimpl-widget.cpp && 01-pimpl.exe
+// g++ -std=c++11 -I../include -o 01-pimpl.exe 01-pimpl-widget.cpp 01-pimpl.cpp && 01-pimpl.exe

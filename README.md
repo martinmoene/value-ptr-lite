@@ -22,7 +22,7 @@ Pimpl example usage
 ```Cpp
 // in header file:
 
-#include "value_ptr.hpp"
+#include "nonstd/value_ptr.hpp"
 
 // Thanks to value_ptr we get value semantics for free:
 
