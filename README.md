@@ -259,7 +259,8 @@ All tests should pass, indicating your platform is supported and you are ready t
 
 Other value-ptr implementations
 -------------------------------
-(TBD)
+- LoopPerfect. [valuable: A C++ smart-pointer with value-semantics](https://github.com/LoopPerfect/valuable) (C++14).  
+- [Search _value ptr_ on GitHub](https://github.com/search?l=C%2B%2B&q=value_ptr&type=Repositories).  
 
 
 Notes and references
