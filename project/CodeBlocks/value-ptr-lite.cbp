@@ -30,6 +30,7 @@
 		<Unit filename="../../example/BUCK" />
 		<Unit filename="../../example/CMakeLists.txt" />
 		<Unit filename="../../include/nonstd/value_ptr.hpp" />
+		<Unit filename="../../script/create-cov-rpt.py" />
 		<Unit filename="../../script/create-vcpkg.py" />
 		<Unit filename="../../script/update-version.py" />
 		<Unit filename="../../script/upload-conan.py" />
