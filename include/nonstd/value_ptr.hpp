@@ -222,14 +222,17 @@
 
 #if nsvp_CPP11_OR_GREATER
 
-# define nsvp_REQUIRES_T(...) \
-    , typename = typename std::enable_if<__VA_ARGS__>::type
+#define nsvp_REQUIRES_0(...) \
+    template< bool B = (__VA_ARGS__), typename std::enable_if<B, int>::type = 0 >
 
-# define nsvp_REQUIRES_R(R, ...) \
-    typename std::enable_if<__VA_ARGS__, R>::type
+#define nsvp_REQUIRES_T(...) \
+    , typename = typename std::enable_if< (__VA_ARGS__), nonstd::vptr::detail::enabler >::type
 
-# define nsvp_REQUIRES_A(...) \
-    , typename std::enable_if<__VA_ARGS__, void*>::type = nsvp_nullptr
+#define nsvp_REQUIRES_R(R, ...) \
+    typename std::enable_if< (__VA_ARGS__), R>::type
+
+#define nsvp_REQUIRES_A(...) \
+    , typename std::enable_if< (__VA_ARGS__), void*>::type = nullptr
 
 #endif
 
@@ -353,6 +356,8 @@ struct remove_cvref
 #endif // nsvp_CPP11_OR_GREATER
 
 namespace detail {
+
+/*enum*/ class  enabler{};
 
 #if nsvp_CPP11_OR_GREATER
 using std::default_delete;
@@ -668,8 +673,7 @@ public:
 
     template< class... Args
         nsvp_REQUIRES_T(
-            std::is_constructible<T, Args&&...>::value
-        )
+            std::is_constructible<T, Args&&...>::value )
     >
     explicit value_ptr( nonstd_lite_in_place_t(T), Args&&... args )
     : ptr( nonstd_lite_in_place(T), std::forward<Args>(args)...)
@@ -677,8 +681,7 @@ public:
 
     template< class U, class... Args
         nsvp_REQUIRES_T(
-            std::is_constructible<T, std::initializer_list<U>&, Args&&...>::value
-        )
+            std::is_constructible<T, std::initializer_list<U>&, Args&&...>::value )
     >
     explicit value_ptr( nonstd_lite_in_place_t(T), std::initializer_list<U> il, Args&&... args )
     : ptr( nonstd_lite_in_place(T), il, std::forward<Args>(args)...)
@@ -707,12 +710,11 @@ public:
 #endif
 
 #if  nsvp_CPP11_OR_GREATER
-    template< class V, class ClonerOrDeleter >
-    value_ptr( V && value, ClonerOrDeleter && cloner_or_deleter
-        nsvp_REQUIRES_A(
-            !std::is_same<typename std20::remove_cvref<V>::type, nonstd_lite_in_place_t(V)>::value
-        )
-    )
+    template< class V, class ClonerOrDeleter
+        nsvp_REQUIRES_T(
+            !std::is_same<typename std20::remove_cvref<V>::type, nonstd_lite_in_place_t(V)>::value )
+    >
+    value_ptr( V && value, ClonerOrDeleter && cloner_or_deleter )
     : ptr( std::forward<V>( value ), std::forward<ClonerOrDeleter>( cloner_or_deleter ) )
     {}
 #else
@@ -723,12 +725,11 @@ public:
 #endif
 
 #if  nsvp_CPP11_OR_GREATER
-    template< class V, class C, class D >
-    value_ptr( V && value, C && cloner, D && deleter
-        nsvp_REQUIRES_A(
-            !std::is_same<typename std20::remove_cvref<V>::type, nonstd_lite_in_place_t(V)>::value
-        )
-    )
+    template< class V, class C, class D
+        nsvp_REQUIRES_T(
+            !std::is_same<typename std20::remove_cvref<V>::type, nonstd_lite_in_place_t(V)>::value )
+    >
+    value_ptr( V && value, C && cloner, D && deleter )
     : ptr( std::forward<V>( value ), std::forward<C>( cloner ), std::forward<D>( deleter ) )
     {}
 #else
@@ -753,8 +754,10 @@ public:
     }
 
 #if nsvp_CPP11_OR_GREATER
-    template< class U,
-        typename = typename std::enable_if< std::is_same< typename std::decay<U>::type, T>::value >::type >
+    template< class U
+        nsvp_REQUIRES_T(
+            std::is_same< typename std::decay<U>::type, T>::value )
+    >
     value_ptr & operator=( U && value )
     {
         ptr.reset( std::forward<U>( value ) );
