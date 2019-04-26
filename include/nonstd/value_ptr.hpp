@@ -13,7 +13,7 @@
 
 #define value_ptr_lite_MAJOR  0
 #define value_ptr_lite_MINOR  2
-#define value_ptr_lite_PATCH  0
+#define value_ptr_lite_PATCH  1
 
 #define value_ptr_lite_VERSION  nsvp_STRINGIFY(value_ptr_lite_MAJOR) "." nsvp_STRINGIFY(value_ptr_lite_MINOR) "." nsvp_STRINGIFY(value_ptr_lite_PATCH)
 

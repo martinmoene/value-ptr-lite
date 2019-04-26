@@ -11,7 +11,7 @@ cmake_minimum_required( VERSION 3.5 FATAL_ERROR )
 
 project(
     value_ptr_lite
-    VERSION 0.2.0
+    VERSION 0.2.1
 #   DESCRIPTION "A C++ smart-pointer with value semantics for C++98, C++11 and later in a single-file header-only library"
 #   HOMEPAGE_URL "https://github.com/martinmoene/value_ptr-lite"
     LANGUAGES CXX )
@@ -35,17 +35,17 @@ endif()
 
 # If toplevel project, enable building and performing of tests, disable building of examples:
 
-option( VALUE_PTR_LITE_BUILD_TEST    "Build and perform value_ptr-lite tests" ${value_ptr_IS_TOPLEVEL_PROJECT} )
-option( VALUE_PTR_LITE_BUILD_EXAMPLE "Build value_ptr-lite examples" OFF )
+option( VALUE_PTR_LITE_OPT_BUILD_TESTS    "Build and perform value_ptr-lite tests" ${value_ptr_IS_TOPLEVEL_PROJECT} )
+option( VALUE_PTR_LITE_OPT_BUILD_EXAMPLES "Build value_ptr-lite examples" OFF )
 
 # If requested, build and perform tests, build examples:
 
-if ( VALUE_PTR_LITE_BUILD_TEST )
+if ( VALUE_PTR_LITE_OPT_BUILD_TESTS )
     enable_testing()
     add_subdirectory( test )
 endif()
 
-if ( VALUE_PTR_LITE_BUILD_EXAMPLE )
+if ( VALUE_PTR_LITE_OPT_BUILD_EXAMPLES )
     enable_testing()
     add_subdirectory( example )
 endif()
