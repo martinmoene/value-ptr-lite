@@ -17,8 +17,8 @@ class ValuePtrLiteConan(ConanFile):
     def package(self):
         """Run CMake install"""
         cmake = CMake(self)
-        cmake.definitions["VALUE_PTR_LITE_OPT_BUILD_TESTS"] = "OFF"
-        cmake.definitions["VALUE_PTR_LITE_OPT_BUILD_EXAMPLES"] = "OFF"
+        cmake.definitions["VALUE_PTR_LITE_BUILD_TEST"] = "OFF"
+        cmake.definitions["VALUE_PTR_LITE_BUILD_EXAMPLE"] = "OFF"
         cmake.configure()
         cmake.install()
 
