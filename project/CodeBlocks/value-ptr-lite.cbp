@@ -21,8 +21,8 @@
 		<Unit filename="../../LICENSE.txt" />
 		<Unit filename="../../README.md" />
 		<Unit filename="../../appveyor.yml" />
-		<Unit filename="../../cmake/value_ptr-lite-config-version.cmake.in" />
-		<Unit filename="../../cmake/value_ptr-lite-config.cmake.in" />
+		<Unit filename="../../cmake/value-ptr-lite-config-version.cmake.in" />
+		<Unit filename="../../cmake/value-ptr-lite-config.cmake.in" />
 		<Unit filename="../../conanfile.py" />
 		<Unit filename="../../example/01-pimpl-widget.hpp" />
 		<Unit filename="../../example/01-pimpl.cpp" />
@@ -42,9 +42,9 @@
 		<Unit filename="../../test/tc.bat" />
 		<Unit filename="../../test/tg-all.bat" />
 		<Unit filename="../../test/tg.bat" />
-		<Unit filename="../../test/value_ptr-main.t.cpp" />
-		<Unit filename="../../test/value_ptr-main.t.hpp" />
-		<Unit filename="../../test/value_ptr.t.cpp" />
+		<Unit filename="../../test/value-ptr-main.t.cpp" />
+		<Unit filename="../../test/value-ptr-main.t.hpp" />
+		<Unit filename="../../test/value-ptr.t.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

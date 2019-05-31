@@ -18,7 +18,7 @@ project(
 
 # Package information:
 
-set( unit_name       "value_ptr" )
+set( unit_name       "value-ptr" )
 set( package_nspace  "nonstd" )
 set( package_name    "${unit_name}-lite" )
 set( package_version "${${PROJECT_NAME}_VERSION}" )

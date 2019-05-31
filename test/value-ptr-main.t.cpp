@@ -5,7 +5,7 @@
 // Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
-#include "value_ptr-main.t.hpp"
+#include "value-ptr-main.t.hpp"
 
 #define nsvp_PRESENT( x ) \
     std::cout << #x << ": " << x << "\n"
@@ -76,15 +76,15 @@ int main( int argc, char * argv[] )
 }
 
 #if 0
-g++            -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
-g++ -std=c++98 -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
-g++ -std=c++03 -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
-g++ -std=c++0x -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
-g++ -std=c++11 -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
-g++ -std=c++14 -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
-g++ -std=c++17 -I../include -o value_ptr-main.t.exe value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
+g++            -I../include -o value-ptr-main.t.exe value-ptr-main.t.cpp value-ptr.t.cpp && value-ptr-main.t.exe --pass
+g++ -std=c++98 -I../include -o value-ptr-main.t.exe value-ptr-main.t.cpp value-ptr.t.cpp && value-ptr-main.t.exe --pass
+g++ -std=c++03 -I../include -o value-ptr-main.t.exe value-ptr-main.t.cpp value-ptr.t.cpp && value-ptr-main.t.exe --pass
+g++ -std=c++0x -I../include -o value-ptr-main.t.exe value-ptr-main.t.cpp value-ptr.t.cpp && value-ptr-main.t.exe --pass
+g++ -std=c++11 -I../include -o value-ptr-main.t.exe value-ptr-main.t.cpp value-ptr.t.cpp && value-ptr-main.t.exe --pass
+g++ -std=c++14 -I../include -o value-ptr-main.t.exe value-ptr-main.t.cpp value-ptr.t.cpp && value-ptr-main.t.exe --pass
+g++ -std=c++17 -I../include -o value-ptr-main.t.exe value-ptr-main.t.cpp value-ptr.t.cpp && value-ptr-main.t.exe --pass
 
-cl -EHsc -I../include value_ptr-main.t.cpp value_ptr.t.cpp && value_ptr-main.t.exe --pass
+cl -EHsc -I../include value-ptr-main.t.cpp value-ptr.t.cpp && value-ptr-main.t.exe --pass
 #endif
 
 // end of file

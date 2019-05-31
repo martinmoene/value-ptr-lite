@@ -14,7 +14,7 @@ project( test LANGUAGES CXX )
 
 option( VALUE_PTR_LITE_COLOURISE_TEST "Colourise test output" OFF )
 
-set( unit_name "value_ptr" )
+set( unit_name "value-ptr" )
 set( PACKAGE   ${unit_name}-lite )
 set( PROGRAM   ${unit_name}-lite )
 set( SOURCES   ${unit_name}-main.t.cpp ${unit_name}.t.cpp )

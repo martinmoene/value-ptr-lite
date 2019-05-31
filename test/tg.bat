@@ -3,7 +3,8 @@
 :: tg.bat - compile & run tests (GNUC).
 ::
 
-set unit=value_ptr
+set      unit=value_ptr
+set unit_file=value-ptr
 
 :: if no std is given, use c++11
 
@@ -29,7 +30,7 @@ rem -flto / -fwhole-program
 set  optflags=-O2
 set warnflags=-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wno-padded -Wno-missing-noreturn
 
-%gpp% -std=%std% %optflags% %warnflags% %unit_select% %unit_config% -o %unit%-main.t.exe -I../include %unit%-main.t.cpp %unit%.t.cpp && %unit%-main.t.exe
+%gpp% -std=%std% %optflags% %warnflags% %unit_select% %unit_config% -o %unit_file%-main.t.exe -I../include %unit_file%-main.t.cpp %unit_file%.t.cpp && %unit_file%-main.t.exe
 
 endlocal & goto :EOF
 

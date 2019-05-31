@@ -11,7 +11,7 @@ endif()
 
 project( example LANGUAGES CXX )
 
-set( unit_name "value_ptr" )
+set( unit_name "value-ptr" )
 set( PACKAGE   ${unit_name}-lite )
 
 message( STATUS "Subproject '${PROJECT_NAME}'")

@@ -4,14 +4,14 @@
 //
 // Copyright 2017-2018 by Martin Moene
 //
-// Distributed under the Boost Software License, Version 1.0. 
+// Distributed under the Boost Software License, Version 1.0.
 // (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 // ToDo:
 // template < class U > /* EXPLICIT */ optional( const optional<U>& other );
 // template < class U > /* EXPLICIT */ optional( optional<U>&& other );
 
-#include "value_ptr-main.t.hpp"
+#include "value-ptr-main.t.hpp"
 
 using namespace nonstd;
 
@@ -795,7 +795,7 @@ CASE( "value_ptr: Throws bad_value_access at disengaged access" )
 {
     value_ptr<int>       vp;
     value_ptr<int> const cvp;
-    
+
     EXPECT_THROWS_AS(  vp.value(), bad_value_access );
     EXPECT_THROWS_AS( cvp.value(), bad_value_access );
 }

@@ -3,7 +3,8 @@
 :: t.bat - compile & run tests (MSVC).
 ::
 
-set unit=value_ptr
+set      unit=value_ptr
+set unit_file=value-ptr
 
 :: if no std is given, use compiler default
 
@@ -28,7 +29,7 @@ set msvc_defines=^
 
 set CppCoreCheckInclude=%VCINSTALLDIR%\Auxiliary\VS\include
 
-cl -W3 -EHsc %std% %unit_select% %unit_config% %msvc_defines% -I../include %unit%-main.t.cpp %unit%.t.cpp && %unit%-main.t.exe
+cl -W3 -EHsc %std% %unit_select% %unit_config% %msvc_defines% -I../include %unit_file%-main.t.cpp %unit_file%.t.cpp && %unit_file%-main.t.exe
 endlocal & goto :EOF
 
 :: subroutines:

@@ -6,8 +6,8 @@ cxx_binary(
     '*.hpp',
   ]),
   srcs = glob([
-    'value_ptr.t.cpp',
-    'value_ptr-main.t.cpp',
+    'value-ptr.t.cpp',
+    'value-ptr-main.t.cpp',
   ]),
   compiler_flags = [
     '-EHsc',
