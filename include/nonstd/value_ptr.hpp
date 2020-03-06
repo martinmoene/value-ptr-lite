@@ -227,7 +227,7 @@
     template< bool B = (__VA_ARGS__), typename std::enable_if<B, int>::type = 0 >
 
 #define nsvp_REQUIRES_T(...) \
-    , typename = typename std::enable_if< (__VA_ARGS__), nonstd::vptr::detail::enabler >::type
+    , typename std::enable_if< (__VA_ARGS__), int >::type = 0
 
 #define nsvp_REQUIRES_R(R, ...) \
     typename std::enable_if< (__VA_ARGS__), R>::type
@@ -357,8 +357,6 @@ struct remove_cvref
 #endif // nsvp_CPP11_OR_GREATER
 
 namespace detail {
-
-/*enum*/ class  enabler{};
 
 #if nsvp_CPP11_OR_GREATER
 using std::default_delete;
