@@ -3,8 +3,8 @@
 :: tc-cl.bat - compile & run tests (clang-cl).
 ::
 
-set      unit=value-ptr
-set unit_file=%unit%
+set      unit=value_ptr
+set unit_file=value-ptr
 
 :: if no std is given, use c++14
 
