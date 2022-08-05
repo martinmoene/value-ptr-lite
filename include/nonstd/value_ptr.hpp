@@ -39,7 +39,7 @@
 # endif
 #endif
 
-// C++ language version detection (C++20 is speculative):
+// C++ language version detection (C++23 is speculative):
 // Note: VC14.0/1900 (VS2015) lacks too much from C++14.
 
 #ifndef   nsvp_CPLUSPLUS
@@ -55,7 +55,8 @@
 #define nsvp_CPP11_OR_GREATER_ ( nsvp_CPLUSPLUS >= 201103L )
 #define nsvp_CPP14_OR_GREATER  ( nsvp_CPLUSPLUS >= 201402L )
 #define nsvp_CPP17_OR_GREATER  ( nsvp_CPLUSPLUS >= 201703L )
-#define nsvp_CPP20_OR_GREATER  ( nsvp_CPLUSPLUS >= 202000L )
+#define nsvp_CPP20_OR_GREATER  ( nsvp_CPLUSPLUS >= 202002L )
+#define nsvp_CPP23_OR_GREATER  ( nsvp_CPLUSPLUS >= 202300L )
 
 // half-open range [lo..hi):
 #define nsvp_BETWEEN( v, lo, hi ) ( (lo) <= (v) && (v) < (hi) )
