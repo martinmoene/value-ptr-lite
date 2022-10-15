@@ -1,64 +1,113 @@
-# Copyright 2017-2018 by Martin Moene
+# Copyright 2021-2021 by Martin Moene
 #
-# https://github.com/martinmoene/value_ptr-lite
+# https://github.com/martinmoene/XXX-lite
 #
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file LICENSE.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 if( NOT DEFINED CMAKE_MINIMUM_REQUIRED_VERSION )
-    cmake_minimum_required( VERSION 3.5 FATAL_ERROR )
+    cmake_minimum_required( VERSION 3.8 FATAL_ERROR )
 endif()
 
 project( example LANGUAGES CXX )
 
-# unit_name provided by toplevel CMakeLists.txt [# unit_name provided by toplevel CMakeLists.txt]
+# unit_name provided by toplevel CMakeLists.txt [set( unit_name "xxx" )]
 set( PACKAGE   ${unit_name}-lite )
+set( PROGRAM   ${unit_name}-lite )
 
-message( STATUS "Subproject '${PROJECT_NAME}'")
+message( STATUS "Subproject '${PROJECT_NAME}', examples '${PROGRAM}-*'")
 
-# ToDo: link 01-pimpl-widget.cpp with 01-pimpl.cpp
+# Target default options and definitions:
 
-set( TARGETS
+set( OPTIONS "" )
+#set( DEFINITIONS "" )
+
+# Sources (.cpp), normal and no-exception, and their base names:
+
+set( SOURCES
     02-tree
+    04-vp-variant
 )
 
 if( NOT MSVC OR NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.00 )
-    set( TARGETS
+    set( SOURCES
         01-pimpl
-        ${TARGETS}
+        ${SOURCES}
 )
 endif()
 
-set( HDRDIR ${CMAKE_CURRENT_SOURCE_DIR}/../include/nonstd )
+# Hack indicriminately adding source depended on by 01-pimpl.cpp
 
-foreach( target ${TARGETS} )
-    add_executable       ( ${target} ${target}.cpp )
-    target_link_libraries( ${target} PRIVATE ${PACKAGE} )
-endforeach()
+set( SOURCES_WIDGET
+    01-pimpl-widget.cpp 
+)
 
-# set compiler options:
+set( SOURCES_NE
+    03-no-exceptions
+)
+
+string( REPLACE ".cpp" "" BASENAMES    "${SOURCES}" )
+string( REPLACE ".cpp" "" BASENAMES_NE "${SOURCES_NE}" )
+
+# Determine options:
 
 if( MSVC )
-    foreach( target ${TARGETS} )
-        target_compile_options( ${target} PUBLIC -W3 -EHsc )
-    endforeach()
+    message( STATUS "Matched: MSVC")
+
+    set( BASE_OPTIONS -W3 )
+    set( EXCEPTIONS_OPTIONS ${BASE_OPTIONS} -EHsc )
+    set( NO_EXCEPTIONS_OPTIONS ${BASE_OPTIONS} )
+
+elseif( CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang" )
+    message( STATUS "CompilerId: '${CMAKE_CXX_COMPILER_ID}'")
+
+    set( BASE_OPTIONS -Wall -Wextra -Wconversion -Wsign-conversion -Wno-missing-braces -fno-elide-constructors )
+    set( EXCEPTIONS_OPTIONS ${BASE_OPTIONS} )
+    set( NO_EXCEPTIONS_OPTIONS -fno-exceptions )
+
+elseif( CMAKE_CXX_COMPILER_ID MATCHES "Intel" )
+    # as is
+    message( STATUS "Matched: Intel")
 else()
-    foreach( target ${TARGETS} )
-        target_compile_options( ${target} PUBLIC -std=c++11 -Wall -Wno-missing-braces )
-    endforeach()
+    # as is
+    message( STATUS "Matched: nothing")
 endif()
 
-foreach( target ${TARGETS} )
-    target_compile_options( ${target} PUBLIC -Dlest_FEATURE_AUTO_REGISTER=1 )
+# Function to emulate ternary operaton `result = b ? x : y`:
+
+macro( ternary var boolean value1 value2 )
+    if( ${boolean} )
+        set( ${var} ${value1} )
+    else()
+        set( ${var} ${value2} )
+    endif()
+endmacro()
+
+# Function to create a target:
+
+function( make_target name no_exceptions )
+    ternary( ne no_exceptions "-ne" "" )
+
+    add_executable             ( ${PROGRAM}-${name}${ne} ${name}.cpp ${SOURCES_WIDGET} )
+    target_include_directories ( ${PROGRAM}-${name}${ne} PRIVATE ../include )
+    target_include_directories ( ${PROGRAM}-${name}${ne} PRIVATE ../../variant-lite/include )
+    # target_link_libraries      ( ${PROGRAM}-${name}${ne} PRIVATE ${PACKAGE} )
+    if ( no_exceptions )
+        target_compile_options ( ${PROGRAM}-${name}${ne} PRIVATE ${NO_EXCEPTIONS_OPTIONS} )
+    else()
+        target_compile_options ( ${PROGRAM}-${name}${ne} PRIVATE ${EXCEPTIONS_OPTIONS} )
+    endif()
+
+endfunction()
+
+# Create targets:
+
+foreach( target ${BASENAMES} )
+    make_target( ${target} FALSE )
 endforeach()
 
-# configure unit tests via CTest:
-
-enable_testing()
-
-foreach( target ${TARGETS} )
-    add_test    ( NAME ${target} COMMAND ${target} )
-    set_property( TEST ${target} PROPERTY LABELS test example )
+foreach( target ${BASENAMES_NE} )
+    make_target( ${target} TRUE )
 endforeach()
 
 # end of file
