@@ -11,10 +11,12 @@ endif()
 
 project( example LANGUAGES CXX )
 
-set( unit_name "value-ptr" )
+# unit_name provided by toplevel CMakeLists.txt [# unit_name provided by toplevel CMakeLists.txt]
 set( PACKAGE   ${unit_name}-lite )
 
 message( STATUS "Subproject '${PROJECT_NAME}'")
+
+# ToDo: link 01-pimpl-widget.cpp with 01-pimpl.cpp
 
 set( TARGETS
     02-tree
