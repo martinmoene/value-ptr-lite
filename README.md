@@ -269,6 +269,7 @@ Notes and references
 <a id="ref1"></a>[1] Gaetano Checinski. [value_ptr — The Missing C++ Smart-pointer](https://hackernoon.com/value-ptr-the-missing-c-smart-pointer-1f515664153e) ([GitHub](https://github.com/LoopPerfect/valuable)). May 2017.  
 <a id="ref2"></a>[2] Andrey Upadyshev. [PIMPL, Rule of Zero and Scott Meyers](http://oliora.github.io/2015/12/29/pimpl-and-rule-of-zero.html) ([GitHub](https://github.com/oliora/samples/blob/master/spimpl.h)). December 29, 2015.  
 <a id="ref3"></a>[3] [p0201 - A polymorphic value-type for C++](https://wg21.link/p0201). March 2019.  
+<a id="ref4"></a>[4] [p1950 - indirect_value: A Free-Store-Allocated Value Type For C++](https://wg21.link/p1950). October 2022.  
 
 Appendix
 --------
